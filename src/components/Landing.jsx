@@ -9,7 +9,7 @@ const Landing = () => {
   };
 
   const userLogin = () => {
-    navigate("/user/signup");
+    navigate("/user/login");
   };
 
   const adminLogin = () => {

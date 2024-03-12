@@ -1,26 +1,28 @@
 import "./App.css";
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-//Components
+// Components
 import Main from "./components/Main";
 import Header from "./components/Header";
 import User from "./components/User";
-import Signup from "./components/user/userDash"
+import Signup from "./components/user/userSignup";
+import Login from "./components/user/userLogin";
 
 const App = () => {
   return (
     <>
-    <Header/>
-    <Router>
-      <Routes>
-        <Route exact path='/' Component={Main}/>
-        <Route exact path='user' Component={User}>
-          <Route exact path='signup' Component={Signup}/>
-        </Route>
-      </Routes>
-    </Router>
+      <Header />
+      <Router>
+        <Routes>
+          <Route exact path='/' element={<Main />} />
+          <Route path='user' element={<User />}>
+            <Route path='signup' element={<Signup />} />
+            <Route path='login' element={<Login />} />
+          </Route>
+        </Routes>
+      </Router>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
