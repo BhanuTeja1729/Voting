@@ -124,19 +124,9 @@ const userSignup = () => {
             required
           />
         </Stack>
-        {/* <TextField
-          type="date"
-          variant="outlined"
-          label="Date Of Birth"
-          color="primary"
-          value={dateOfBirth}
-          onChange={(e) => setDateOfBirth(e.target.value)}
-          fullWidth
-          required
-          sx={{ mb: 4 }}
-        /> */}
-        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={"en-gb"}>
-          <DatePicker sx={{mb: 4, width:"100%" }} value={dateOfBirth} onChange={(e) => {
+        
+        <LocalizationProvider color="primary" dateAdapter={AdapterDayjs} adapterLocale={"en-gb"}>
+          <DatePicker  sx={{mb: 4, width:"100%" }} value={dateOfBirth} onChange={(e) => {
             const date = dayjs(e).format("DD-MM-YYYY");
             setDateOfBirth(date);
           }}/>
