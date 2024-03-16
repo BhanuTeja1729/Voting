@@ -13,7 +13,7 @@ const Landing = () => {
   };
 
   const adminLogin = () => {
-    navigate("/admin");
+    navigate("/admin/login");
   };
 
   return (

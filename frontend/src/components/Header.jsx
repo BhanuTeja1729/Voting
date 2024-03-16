@@ -7,10 +7,14 @@ import logo from "/Election.svg";
 function Header() {
   return (
     <>
-      <AppBar fixed color="default" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+      <AppBar
+        fixed
+        color="default"
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
         <Container maxWidth="xl">
           <Toolbar className="flex items-center">
-            <Container class="flex-none">
+            <Container className="">
               <Typography
                 variant="h6"
                 noWrap

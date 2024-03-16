@@ -10,6 +10,7 @@ import Login from "./components/user/userLogin";
 import Admin from "./components/Admin";
 import AdminDash from "./components/admin/adminDash";
 import AdminLogin from "./components/admin/adminLogin";
+import Voter from "./components/admin/voter";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="admin" element={<Admin />}>
             <Route path="login" element={<AdminLogin />} />
             <Route path="dashboard" element={<AdminDash />} />
+            <Route path="voter" element={<Voter />} />
           </Route>
         </Routes>
       </Router>
