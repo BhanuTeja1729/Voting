@@ -30,6 +30,7 @@ const adminSidebar = () => {
     BallotIcon,
     PublicOutlinedIcon,
   ];
+ 
 
   return (
     <>
@@ -52,7 +53,7 @@ const adminSidebar = () => {
             <List>
               {["Dashboard", "Voter", "Candidate", "Election", "Result"].map(
                 (text, index) => (
-                  <Link to= {text.toLowerCase()}>
+                  <Link to={text.toLowerCase()}>
                     <ListItem key={text} disablePadding>
                       <ListItemButton>
                         <ListItemIcon>
@@ -69,14 +70,16 @@ const adminSidebar = () => {
             </List>
             <Divider />
             <List>
-              <ListItem key={"Logout"} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <LogoutOutlinedIcon fontSize="large" />
-                  </ListItemIcon>
-                  <ListItemText primary={"Logout"} />
-                </ListItemButton>
-              </ListItem>
+              <Link to={"/"}>
+                <ListItem key={"Logout"} disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <LogoutOutlinedIcon fontSize="large" />
+                    </ListItemIcon>
+                    <ListItemText primary={"Logout"} />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
             </List>
           </Box>
         </Drawer>

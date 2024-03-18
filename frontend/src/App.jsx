@@ -11,6 +11,9 @@ import Admin from "./components/Admin";
 import AdminDash from "./components/admin/adminDash";
 import AdminLogin from "./components/admin/adminLogin";
 import Voter from "./components/admin/voter";
+import Candidate from "./components/admin/candidate";
+import Election from "./components/admin/election";
+import Result from "./components/admin/result";
 
 const App = () => {
   return (
@@ -27,6 +30,9 @@ const App = () => {
             <Route path="login" element={<AdminLogin />} />
             <Route path="dashboard" element={<AdminDash />} />
             <Route path="voter" element={<Voter />} />
+            <Route path="candidate" element={<Candidate />} />
+            <Route path="election" element={<Election />} />
+            <Route path="result" element={<Result />} />
           </Route>
         </Routes>
       </Router>
