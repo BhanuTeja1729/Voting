@@ -1,11 +1,6 @@
 import React from "react";
-import { BarChart } from "@mui/x-charts";
+import { PieChart } from "@mui/x-charts";
 import { Link } from "react-router-dom";
-
-import Voter from "./voter";
-import Candidate from "./candidate";
-import Election from "./election";
-import Result from "./result";
 
 import {
   Card,
@@ -25,14 +20,15 @@ const adminDash = () => {
 
   return (
     <>
-      <h1 className="mb-10 text-center text-3xl font-semibold mt-20">
-        Admin Dashboard
-      </h1>
-      <Box sx={{marginLeft:35}}>
-        <Grid container spacing={6}>
-          <Grid item xs={3}>
+
+      <Box sx={{mr:7}}>
+        <h1 className="mb-5 text-3xl font-semibold mt-20">
+          Admin Dashboard
+        </h1>
+        <Grid container spacing={2}>
+          <Grid item xs={4}>
             <Link to={"../voter"}>
-              <Card variant="outlined">
+              <Card variant="outlined" max>
                 <CardContent>
                   <Typography
                     sx={{
@@ -102,7 +98,7 @@ const adminDash = () => {
             </Link>
           </Grid>
 
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <Link to={"../candidate"}>
               <Card variant="outlined">
                 <CardContent>
@@ -174,7 +170,7 @@ const adminDash = () => {
             </Link>
           </Grid>
 
-          <Grid item xs={3}>
+          <Grid item xs={4} sx={{ mr: 0 }}>
             <Link to={"../election"}>
               <Card variant="outlined">
                 <CardContent>
@@ -248,7 +244,7 @@ const adminDash = () => {
         </Grid>
 
         <Link to={"../result"}>
-          <Card variant="outlined" sx={{ maxWidth: "74%", mt: 5 }}>
+          <Card variant="outlined" sx={{ maxWidth: "74%", mt: 5, mb: 4 }}>
             <CardContent>
               <Typography
                 sx={{
@@ -261,13 +257,18 @@ const adminDash = () => {
               </Typography>
               <Divider />
               <div className="flex justify-center">
-                <BarChart
+                <PieChart
                   series={[
-                    { data: [3, 4, 5, 8], label: "Party 1" },
-                    { data: [4, 3, 6, 3], label: "Party 2" },
+                    {
+                      data: [
+                        { id: 0, value: 10, label: 'series A' },
+                        { id: 1, value: 15, label: 'series B' },
+                        { id: 2, value: 20, label: 'series C' }
+                      ],
+                    },
                   ]}
-                  width={600}
-                  height={350}
+                  width={400}
+                  height={200}
                   sx={{ mt: 5 }}
                 />
               </div>
