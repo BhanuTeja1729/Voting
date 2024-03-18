@@ -10,6 +10,7 @@ app.use(express.json());
 // Available routes
 // app.use("/voter", require("./routes/voter"));
 app.use("/voter", require("./routes/voter"));
+app.use("/admin", require("./routes/admin"));
 
 app.listen(port, () => {
   console.log(`Notebook app listening at port http://localhost:${port}`);
