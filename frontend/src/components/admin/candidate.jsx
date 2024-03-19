@@ -10,7 +10,6 @@ const candidate = () => {
       <h1 className="mb-8 text-3xl font-semibold">
         Candidate
       </h1>
-
       <CandidateCard />
       </Box>
     </>

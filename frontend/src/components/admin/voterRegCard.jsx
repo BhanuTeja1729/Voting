@@ -1,23 +1,70 @@
 import React from 'react'
-import { Divider } from '@mui/material';
+import { Divider, Card, Stack, Typography, Box, Button, List, ListItem, ListItemText } from '@mui/material';
+import cImg from "/c1.png"
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import CheckIcon from '@mui/icons-material/Check';
+
+
 const voterRegCard = () => {
+  let cName = "Pramod";
+  let cWardNo = "B80";
+  let cParty = "Pammi Sangha";
   return (
-    <div className="my-9 px-6 py-6 drop-shadow-lg bg-slate-100 rounded-2xl  w-1/2 flex flex-row ">
-      <div className="flex justify-between basis-1/2 mx-2">
-        <div className='flex justify-between flex-col'>
-          <h1 className="text-2xl flex">Name:<h1 className='text-xl text-slate-500'>Shashank k Prabhu</h1></h1>
-          <h1 className="text-2xl flex">Age:<h1 className='text-xl text-slate-500'>21</h1></h1>
-          
-        </div>
+    <>
+      <div className='shadow w-4/5 text-xl'>
+        <Stack direction={"row"} justifyContent={"space-around"} mt={5}>
+          <Typography sx={{ textAlign: 'center', fontSize: 30, fontWeight: "semibold" }}>User Entered Data</Typography>
+          <Typography sx={{ textAlign: 'center', fontSize: 30, fontWeight: "semibold" }}>API Fetched Data</Typography>
+          <Divider flexItem />
+        </Stack>
+        <Card sx={{ p: 3 }}>
+
+          <Stack spacing={3} direction={"row"} className='flex flex-row'>
+            <Stack spacing={2} direction="column" alignItems="flex-start" justifyContent="space-between" className='basis-2/5'>
+              <Box >
+                <List sx={{ width: '100%', maxWidth: 360, my: 2 }}>
+                  <ListItem >
+                    <ListItemText primary={`Name: ${cName}`} />
+                  </ListItem>
+                  <ListItem >
+                    <ListItemText primary={`Ward No: ${cWardNo}`} />
+                  </ListItem>
+                  <ListItem >
+                    <ListItemText primary={`Party: ${cParty}`} />
+                  </ListItem>
+                </List>
+              </Box>
+            </Stack>
+            <Stack spacing={2} direction="row" alignItems="flex-start" className='basis-2/5' >
+              <Divider orientation="vertical" flexItem />
+              <Box>
+                <List sx={{ width: '100%', maxWidth: 360, my: 2 }}>
+                  <ListItem >
+                    <ListItemText primary={`Name: ${cName}`} />
+                  </ListItem>
+                  <ListItem >
+                    <ListItemText primary={`Ward No: ${cWardNo}`} />
+                  </ListItem>
+                  <ListItem >
+                    <ListItemText primary={`Party: ${cParty}`} />
+                  </ListItem>
+                </List>
+              </Box>
+            </Stack>
+            <div className='basis-1/5 items-center flex flex-col gap-2 py-12' >
+              <Button variant="contained" color="error" className='absolute top-0 right-0' sx={{ maxHeight: 50, maxWidth: 350 }}>
+                <DeleteOutlineOutlinedIcon />
+              </Button>
+              <Button variant="contained" color="success" className='absolute top-0 right-0' sx={{ maxHeight: 50, maxWidth: 350 }}>
+                <CheckIcon />
+              </Button>
+            </div>
+          </Stack>
+
+        </Card>
+
       </div>
-      <Divider
-        className="bg-black"
-        orientation="vertical"
-        variant="fullWidth"
-        flexItem
-      />
-      <div className="flex justify-between basis-1/2 mx-2">Bye</div>
-    </div>
+    </>
   );
 }
 

@@ -1,12 +1,14 @@
 import React from 'react';
 import { useState } from 'react';
 
-import { Box, Container, Stack, Typography, Button, TextField } from '@mui/material';
+import { Box, Card, Stack, Typography, Button, TextField, Divider, FormControl, MenuItem, Select, InputLabel } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
-import AccordionActions from '@mui/material/AccordionActions';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+
+import cImg from "/c1.png"
 
 const candidateCard = () => {
 
@@ -14,12 +16,24 @@ const candidateCard = () => {
     const [lastName, setLastName] = useState('')
     const [wardNo, setWardNo] = useState('')
     const [party, setParty] = useState('')
+    const [cImg, setCImg] = useState(null)
 
-
-    function handleSubmit(event) {
-        event.preventDefault();
-
+    const handleRegister = (e) => {
+        e.preventDefault();
+        console.log(firstName, lastName, wardNo, party, cImg)
     }
+
+
+    let cName = "Pramod";
+    let cWardNo = "B80";
+    let cParty = "Pammi Sangha";
+
+    const options = [
+        { value: "Party 1", label: 'Party 1' },
+        { value: "Party 2", label: 'Party 2' },
+        { value: "Party 3", label: 'Party 3' }]
+
+
     return (
         <>
             <div className='shadow w-4/5'>
@@ -29,7 +43,9 @@ const candidateCard = () => {
                         aria-controls="panel3-content"
                         id="panel3-header"
                     >
-                        Register Candidates
+                        <div className='text-xl font-semibold'>
+                            Register Candidates
+                        </div>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Stack spacing={2} direction="row" sx={{ marginBottom: 4 }}>
@@ -65,17 +81,22 @@ const candidateCard = () => {
                             required
                             sx={{ mb: 4 }}
                         />
-                        <TextField
-                            type="text"
-                            variant='outlined'
-                            color='secondary'
-                            label="Party Name"
-                            onChange={e => setParty(e.target.value)}
-                            value={party}
-                            required
-                            fullWidth
-                            sx={{ mb: 3 }}
-                        />
+                        <Box sx={{ mb: 3 }}>
+                            <FormControl fullWidth>
+                                <InputLabel>Party</InputLabel>
+                                <Select
+                                    value={party}
+                                    label="Party"
+                                    onChange={(e) => setParty(e.target.value)}
+                                >
+                                    {options.map(option => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Box>
                         <Box sx={{ justifyContent: "space-between", display: 'flex' }}>
                             <Button
                                 variant="contained"
@@ -85,16 +106,45 @@ const candidateCard = () => {
                                 <input
                                     type="file"
                                     hidden
+                                    onChange={(e) => setCImg(e.target.files[0])}
                                 />
                             </Button>
-                            <Button variant='contained' color='success' sx={{ mr: 1.5 }}>Register</Button>
+                            <Button variant='contained' color='success' sx={{ mr: 1.5 }} onClick={handleRegister}>Register</Button>
                         </Box>
                     </AccordionDetails>
-                    {/* <AccordionActions>
-                        <Button variant='contained' color='success' sx={{ mr: 1.5, mb: 1.5 }}>Register</Button>
-                    </AccordionActions> */}
                 </Accordion>
             </div>
+            <div className='my-5 text-3xl font-semibold'>
+                <Typography variant=''>Registered Candidates</Typography>
+            </div>
+
+            <div className='shadow w-4/5 mt-4'>
+                <Card sx={{ p: 3, mt: 5 }}>
+                    <Stack spacing={3} direction="row" alignItems="center" justifyContent="space-between">
+                        <Box sx={{ maxHeight: 60, maxWidth: 60, mb: 10 }}>
+                            <img src={cImg} alt="Candidate Image" />
+                        </Box>
+                        <Divider orientation='vertical' flexItem />
+                        <Typography sx={{ display: 'flex', alignItems: 'center' }}>
+                            Name: {firstName + " " + lastName}
+                        </Typography>
+                        <Divider orientation='vertical' flexItem />
+                        <Typography sx={{ display: 'flex', alignItems: 'center' }}>
+                            Ward. No: {wardNo}
+                        </Typography>
+                        <Divider orientation='vertical' flexItem />
+                        <Typography sx={{ display: 'flex', alignItems: 'center' }}>
+                            Party: {party}
+                        </Typography>
+                        <Divider orientation='vertical' flexItem />
+                        <Button variant='outlined' color='error'>
+                            <DeleteOutlineOutlinedIcon />
+                        </Button>
+                    </Stack>
+                </Card>
+            </div>
+
+
         </>
     )
 }
