@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const adminSchema = new Schema({
-  adminId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
+  // adminId: {
+  //   type: String,
+  //   required: true,
+  //   unique: true,
+  // },
   adminEmail: {
     type: String,
     required: true,

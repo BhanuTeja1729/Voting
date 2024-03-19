@@ -13,5 +13,5 @@ app.use("/voter", require("./routes/voter"));
 app.use("/admin", require("./routes/admin"));
 
 app.listen(port, () => {
-  console.log(`Notebook app listening at port http://localhost:${port}`);
+  console.log(`Voting App listening at port http://localhost:${port}`);
 });

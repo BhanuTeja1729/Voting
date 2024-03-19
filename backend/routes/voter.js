@@ -10,8 +10,8 @@ router.post(
   [
     body("voterId", "Enter a valid Voter ID").isLength({ min: 10, max: 10 }),
     body("aadharNumber", "Enter a valid Aadhar Number").isLength({
-      min: 16,
-      max: 16,
+      min: 12,
+      max: 12,
     }),
     body("email", "Enter a valid email").isEmail(),
     body("phoneNumber", "Enter a valid phone number").isLength({ min: 10 }),
@@ -29,16 +29,25 @@ router.post(
       phoneNumber,
     } = req.body;
     try {
+      // Check if a user with the same voterId or aadharNumber already exists
+      const existingUser = await voter.findOne({
+        $or: [{ voterId: voterId }, { aadharNumber: aadharNumber }],
+      });
+      if (existingUser) {
+        return res.status(400).json({ error: "User already exists" });
+      }
+
+      // If no existing user found, create a new voter
       const newVoter = new voter({
         voterId,
         voterFirstName,
         voterLastName,
         aadharNumber,
-        image,
         dateOfBirth,
         email,
         phoneNumber,
       });
+
       await newVoter.save();
       res.status(201).json({ newVoter });
     } catch (error) {
@@ -46,5 +55,5 @@ router.post(
     }
   }
 );
-  
+
 module.exports = router;
