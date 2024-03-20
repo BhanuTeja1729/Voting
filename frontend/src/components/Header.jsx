@@ -8,7 +8,7 @@ import logo from "/Election.svg";
 function Header() {
   return (
     <AppBar
-      fixed
+      fixed="true"
       color="default"
       sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
     >

@@ -21,7 +21,7 @@ const voterSchema = new Schema({
     required: true,
     unique: true,
   },
-  image: {
+  imgUrl: {
     type: String,
   },
   dateOfBirth: {

@@ -19,15 +19,16 @@ router.post(
   ],
   async (req, res) => {
     const {
-      voterId,
       voterFirstName,
       voterLastName,
-      dateOfBirth,
-      aadharNumber,
-      image,
       email,
       phoneNumber,
+      dateOfBirth,
+      voterId,
+      aadharNumber,
+      imgUrl,
     } = req.body;
+    
     try {
       // Check if a user with the same voterId or aadharNumber already exists
       const existingUser = await voter.findOne({
@@ -46,6 +47,7 @@ router.post(
         dateOfBirth,
         email,
         phoneNumber,
+        imgUrl,
       });
 
       await newVoter.save();
