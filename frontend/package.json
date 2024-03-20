@@ -20,8 +20,8 @@
     "dayjs": "^1.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-dotenv": "^0.1.3",
-    "react-router-dom": "^6.22.2"
+    "react-router-dom": "^6.22.2",
+    "thirdweb": "^1.0.0-beta-a6a5e2eabc19bb5735535a6d1ee23ebcb3b74e02-20240320090504"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",
