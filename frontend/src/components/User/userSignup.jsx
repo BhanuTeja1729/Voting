@@ -26,7 +26,6 @@ const userSignup = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [img, setImg] = useState(null);
 
-
   const navigate = useNavigate();
 
   //Button Color Style
@@ -54,12 +53,17 @@ const userSignup = () => {
     e.preventDefault();
     try {
       const imgUrl = await uploadFile("image", voterFirstName, voterLastName);
-
-      // Collect form data
-      
-
       try {
-        const res = await create(formData);
+        const res = await create({
+          voterFirstName,
+          voterLastName,
+          email,
+          phoneNumber,
+          dateOfBirth,
+          voterId,
+          aadharNumber,
+          imgUrl,
+        });
         if (res.error) {
           console.error(res.error);
         } else {
@@ -78,7 +82,7 @@ const userSignup = () => {
   const uploadFile = async (type, firstName, lastName) => {
     const data = new FormData();
     data.append("file", type === "image" ? img : null);
-    data.append("upload_preset", type === "image" ? "image_preset" : null);
+    data.append("upload_preset", "image_preset");
 
     // Rename the file
     const fileName = `${firstName}_${lastName}`;
@@ -158,9 +162,9 @@ const userSignup = () => {
           sx={{ mb: 4, width: "100%" }}
           value={dateOfBirth}
           onChange={(e) => {
-            const date = dayjs(e).format("DD-MM-YYYY");
-            setDateOfBirth(date);
+            setDateOfBirth(dayjs(e).format("DD-MM-YYYY"));
           }}
+          // disableFuture
         />
       </LocalizationProvider>
 

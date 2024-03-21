@@ -78,7 +78,7 @@ const adminLogin = () => {
                       type={showPassword ? "text" : "password"}
                       onChange={(e) => setPassword(e.target.value)}
                       endAdornment={
-                        <InputAdornment>
+                        <InputAdornment position="end">
                           <IconButton
                             edge="end"
                             onClick={() => setShowPassword(!showPassword)}

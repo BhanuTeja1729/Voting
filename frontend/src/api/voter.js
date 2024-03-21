@@ -1,9 +1,10 @@
 
+
 export const create = async ({voterFirstName, voterLastName, email, phoneNumber, dateOfBirth, voterId, aadharNumber, imgUrl} = {}) =>{
     const voter = {voterFirstName, voterLastName, email, phoneNumber, dateOfBirth, voterId, aadharNumber, imgUrl};
 
     try{
-        const host = process.env.REACT_APP_API_URL
+        const host = "http://localhost:5000"
         const res = await fetch(`${host}/voter/create`,{
             method:'POST',
             headers:{

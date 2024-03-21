@@ -1,3 +1,5 @@
 "use client";
 
-export {ThirdwebProvider} from "thirdweb/react";
+
+export {ThirdwebProvider,ConnectButton,smartWalletConfig,embeddedWalletConfig, metamaskConfig} from "thirdweb/react";
+

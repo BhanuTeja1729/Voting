@@ -51,7 +51,7 @@ router.post(
       });
 
       await newVoter.save();
-      res.status(201).json({ newVoter });
+      res.status(201).json({ newVoter, message:"Registered Successfully" });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
