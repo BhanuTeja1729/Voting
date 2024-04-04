@@ -164,7 +164,8 @@ const userSignup = () => {
           onChange={(e) => {
             setDateOfBirth(dayjs(e).format("DD-MM-YYYY"));
           }}
-          // disableFuture
+          disableFuture
+          inputFormat="DD-MM-YYYY"
         />
       </LocalizationProvider>
 
