@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 const Voting = () => {
   return (
     <>
-      <Box sx={{ p:1,mx:2,my: 10, boxShadow:3 }}>
+      <Box sx={{ p:1,mx:2,mt: 10 }}>
         <Outlet />
       </Box>
     </>

@@ -26,11 +26,12 @@ const CountdownTimer = ({ startTime, onTimerEnd }) => {
   const minutes = Math.floor(timeRemaining / 60);
   const seconds = timeRemaining % 60;
 
-  // Determine border color based on remaining time
+  // Border color based on remaining time
+ 
   let borderColor;
-  if (minutes >= 7) {
+  if (minutes >= 2) {
     borderColor = "green";
-  } else if (minutes >= 4 && minutes <= 6) {
+  } else if (minutes >= 1 && minutes<=2) {
     borderColor = "orange";
   } else {
     borderColor = "red";
