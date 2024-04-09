@@ -7,16 +7,7 @@ const User = () => {
   let location = useLocation();
   return (
     <>
-      {location.pathname === "/user/guidelines" ? (
-        <div>
-          <div className="ml-0">
-            <Sidebar />
-          </div>
-          <Box sx={{ ml: 40, mt: 10 }}>
-            <Outlet />
-          </Box>
-        </div>
-      ) : (
+      {location.pathname === "/user/login" ? (
         <div className="flex justify-center items-center">
           <div className="container w-full mt-20 flex flex-col md:flex-row bg-white shadow-md rounded-xl px-5 py-5 ">
             <div className="flex-1">
@@ -33,6 +24,15 @@ const User = () => {
               </Box>
             </div>
           </div>
+        </div>
+      ) : (
+        <div>
+          <div className="ml-0">
+            <Sidebar />
+          </div>
+          <Box sx={{ ml: 40, mt: 10 }}>
+            <Outlet />
+          </Box>
         </div>
       )}
     </>
