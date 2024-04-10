@@ -5,9 +5,14 @@ import { Box } from "@mui/material";
 
 const User = () => {
   let location = useLocation();
+  // let guidelines = "/user/guidelines";
+  // let elections = "/user/elections";
+  // let results = "/user/results";
+  let login = "/user/login";
+  let signup = "/user/signup";
   return (
     <>
-      {location.pathname === "/user/login" ? (
+      {location.pathname === login || location.pathname === signup ? (
         <div className="flex justify-center items-center">
           <div className="container w-full mt-20 flex flex-col md:flex-row bg-white shadow-md rounded-xl px-5 py-5 ">
             <div className="flex-1">
