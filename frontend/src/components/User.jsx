@@ -7,7 +7,7 @@ const User = () => {
   let location = useLocation();
   return (
     <>
-      {location.pathname === "/user/login" ? (
+      {location.pathname === "/user/login" || "/user/signup" ? (
         <div className="flex justify-center items-center">
           <div className="container w-full mt-20 flex flex-col md:flex-row bg-white shadow-md rounded-xl px-5 py-5 ">
             <div className="flex-1">
