@@ -9,6 +9,7 @@ import {
   Button,
 } from "@mui/material";
 import CountdownTimer from "./countdownTimer";
+import FaceRecognition from "./faceRecognition";
 
 const candidateList = () => {
   const navigate = useNavigate();
@@ -100,15 +101,17 @@ const candidateList = () => {
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSQ_-60wxOuaV2Ql3ebKHF6YFHjKcSwne4j0x0-RjVgg&s"
               alt="Meow"
             />
+            {/* <FaceRecognition /> */}
           </Box>
         </Stack>
 
         <Box
           sx={{
-            my: 8,
+            mt: 8,
+            mb:6,
             boxShadow: 1,
             padding: 2,
-            maxHeight: "calc(100vh - 500px)",
+            maxHeight: "calc(100vh - 420px)",
             overflow: "auto",
           }}
         >
@@ -127,7 +130,7 @@ const candidateList = () => {
                       title={card.name}
                       image={card.img}
                       component="img"
-                      sx={{ maxHeight: 230, maxWidth: 230 }}
+                      sx={{ maxHeight: 200, maxWidth: 230 }}
                     />
                     <div className="text-xl font-medium">{card.name}</div>
                     <div className="text-xl font-medium">{card.party}</div>
