@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import {useNavigate} from "react-router-dom";
 import { Box, Button } from "@mui/material";
+// eslint-disable-next-line no-unused-vars
 import {alpha}from "@mui/material/styles"
 
 const userElections = () => {
+  // eslint-disable-next-line no-unused-vars, react-hooks/rules-of-hooks
   const [election, setElection] = useState(true);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
   const handleVote = (e)=>{
     e.preventDefault();

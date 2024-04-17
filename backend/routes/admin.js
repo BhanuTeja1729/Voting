@@ -101,6 +101,7 @@ router.get("/voterlist", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+//Route 4: To fetch 
 
 
 // Route 4: To fetch logged-in admin details
