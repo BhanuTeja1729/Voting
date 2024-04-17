@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import adminImage from "/admin.jpeg"
-
+import adminImage from "/admin.jpeg";
+import { login } from "../../api/admin";
 //Material Comps
 import {
   Stack,
@@ -23,25 +23,26 @@ const adminLogin = () => {
   const navigate = useNavigate();
 
   //Form States
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
-  const adminUsername = "Admin";
-  const adminPassword = "@Admin123";
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      //   console.log("Logged In Successfully");
-      // Login Api
-      // if (username == adminUsername && password == adminPassword)
-        navigate("/admin/dashboard");
-      // else alert("Invalid Credentials");
+        const res = await login(email, password);
+        if (res.error) {
+            console.error(res.error);
+        } else {
+            console.log("successful Login");
+            localStorage.setItem('jwt', res.token); // Store the JWT token in local storage
+            navigate("/admin/dashboard");
+        }
     } catch (error) {
-      console.error(error);
+        console.error(error);
     }
-  };
+};
+
 
   return (
     <>
@@ -64,9 +65,9 @@ const adminLogin = () => {
                 <Stack spacing={2}>
                   <TextField
                     type="text"
-                    label="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    label="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     color="secondary"
                     sx={{ marginBottom: 4 }}
                   />

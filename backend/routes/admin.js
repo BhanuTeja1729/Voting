@@ -73,7 +73,7 @@ router.post(
 
       res.cookie("jwt", token, {
         expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-        httpOnly: true,
+        httpOnly: false,
       });
 
       res.status(200).json({ 
@@ -90,7 +90,6 @@ router.post(
 );
 
 
-
 //Route 3: To fetch voter list
 router.get("/voterlist", async (req, res) => {
   try {
@@ -101,10 +100,31 @@ router.get("/voterlist", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-//Route 4: To fetch 
+
+//Route 4: To delete voter from db
+router.delete("/delete/:id", verifyAdminToken, async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    // Check if the voter exists
+    const existingVoter = await voter.findById(id);
+    
+    if (!existingVoter) {
+      return res.status(404).json({ error: "Voter not found" });
+    } 
+
+    // Delete the voter from the database
+    await voter.findByIdAndDelete(id);
+
+    res.status(200).json({ message: "Voter deleted successfully" });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 
-// Route 4: To fetch logged-in admin details
+// Route 5: To fetch logged-in admin details
 router.get("/curr", verifyAdminToken, (req, res) => {
   const adminUser = req.adminUser;
   return res.status(200).json({

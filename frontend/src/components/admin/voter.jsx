@@ -7,12 +7,22 @@ import AdminContext from "../../contexts/admin/adminContext";
 
 const voter = () =>{
   const adminContext = useContext(AdminContext);
-  const { voterList, getVoterList } = adminContext;
+  const { voterList, getVoterList, deleteVoter } = adminContext;
   const voters = voterList;
   useEffect(() => {
     getVoterList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  },[]);
+
+  const handleDeleteVoter = async (voterId) => {
+    try {
+      // Call the deleteVoter function from context with the voterId
+      await deleteVoter(voterId);
+    } catch (error) {
+      console.error("Error deleting voter:", error);
+      // Handle error: You might want to display an error message to the user
+    }
+  };
 
   return (
     <div>
@@ -32,7 +42,7 @@ const voter = () =>{
       </Stack>     
       {console.log(voters)}
       {Array.isArray(voters)&& voters.map((voter) => {
-        return <VoterCard voter={voter} key={voter._id} />;
+        return <VoterCard voter={voter} key={voter._id} onDelete={handleDeleteVoter}/>;
       })}
     </div>
   );

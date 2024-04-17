@@ -30,8 +30,29 @@ const AdminContext = (props) => {
     }
   };
 
+  const deleteVoter = async (voterId) => {
+    try {
+      const response = await fetch(`${host}/delete/${voterId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete voter");
+      }
+
+      // Remove the deleted voter from the state
+      setVoters((prevVoters) => prevVoters.filter((voter) => voter._id !== voterId));
+    } catch (error) {
+      console.error("Error deleting voter:", error);
+      // Handle error: You might want to display an error message to the user
+    }
+  };
+
   return (
-    <adminContext.Provider value={{ voters, getVoterList }} >
+    <adminContext.Provider value={{ voters, getVoterList, voterId, deleteVoter }} >
       {props.children}
     </adminContext.Provider>
   );
