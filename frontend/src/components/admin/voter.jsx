@@ -1,25 +1,18 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useEffect, useState } from "react";
+import { useEffect,useContext } from "react";
 import { Stack, Typography, Divider } from "@mui/material";
 import VoterCard from "./voterRegCard";
-const url = "http://localhost:5000/admin/voterlist";
+import AdminContext from "./adminContext";
+
 
 const voter = () =>{
+  const context=useContext(AdminContext);
+  console.log(AdminContext);
+  console.log(context);
+  const {getVoterList,voters}=context;
   useEffect(() => {
     getVoterList();
   }, []);
-  const getVoterList = async () => {
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await response.json();
-    console.log(data);
-    setVoters(data);
-  };
-  const [voters, setVoters] = useState([]);
   return (
     <div>
       <h1 className="mb-8 text-3xl font-semibold mt-20">Voter Page</h1>
@@ -35,8 +28,8 @@ const voter = () =>{
           API Fetched Data
         </Typography>
         <Divider flexItem />
-      </Stack>
-      {voters.map((voter) => {
+      </Stack>     
+      {Array.isArray(voters)&& voters.map((voter) => {
         return <VoterCard voter={voter} key={voter._id} />;
       })}
     </div>

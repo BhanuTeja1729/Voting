@@ -1,7 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-
 // Components
 import Main from "./components/Main";
 import Header from "./components/Header";
@@ -22,10 +21,11 @@ import Result from "./components/admin/result";
 
 import Voting from "./components/Voting";
 import CandList from "./components/voting/candidateList";
+import AdminContext from "./components/admin/adminContext";
 
 const App = () => {
   return (
-    <>
+    <><AdminContext>
       <Header />
       <Router>
         <Routes>
@@ -37,6 +37,7 @@ const App = () => {
             <Route path="elections" element={<UserElections />} />
             <Route path="results" element={<UserResults />} />
           </Route>
+
           <Route path="admin" element={<Admin />}>
             <Route path="login" element={<AdminLogin />} />
             <Route path="dashboard" element={<AdminDash />} />
@@ -45,11 +46,13 @@ const App = () => {
             <Route path="election" element={<Election />} />
             <Route path="result" element={<Result />} />
           </Route>
-          <Route path="voting" element={<Voting/>}>
-            <Route path="candidates" element={<CandList/>}/>
+
+          <Route path="voting" element={<Voting />}>
+            <Route path="candidates" element={<CandList />} />
           </Route>
         </Routes>
       </Router>
+    </AdminContext>
     </>
   );
 };

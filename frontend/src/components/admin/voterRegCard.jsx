@@ -1,5 +1,5 @@
 
-import { Divider, Card, Stack, Typography, Box, Button, List, ListItem, ListItemText } from '@mui/material';
+import { Divider, Card, Stack, Box, Button, List, ListItem, ListItemText } from '@mui/material';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import CheckIcon from '@mui/icons-material/Check';
 
