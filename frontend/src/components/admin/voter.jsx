@@ -7,7 +7,8 @@ import AdminContext from "../../contexts/admin/adminContext";
 
 const voter = () =>{
   const adminContext = useContext(AdminContext);
-  const { voters, getVoterList } = adminContext;
+  const { voterList, getVoterList } = adminContext;
+  const voters = voterList;
   useEffect(() => {
     getVoterList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
