@@ -31,7 +31,7 @@ const AdminContext = (props) => {
   };
 
   return (
-    <adminContext.Provider value={{ voters, getVoterList }}>
+    <adminContext.Provider value={{ voters, getVoterList }} >
       {props.children}
     </adminContext.Provider>
   );
