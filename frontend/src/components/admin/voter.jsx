@@ -2,17 +2,17 @@
 import { useEffect,useContext } from "react";
 import { Stack, Typography, Divider } from "@mui/material";
 import VoterCard from "./voterRegCard";
-import AdminContext from "./adminContext";
+import AdminContext from "../../contexts/admin/adminContext";
 
 
 const voter = () =>{
-  const context=useContext(AdminContext);
-  console.log(AdminContext);
-  console.log(context);
-  const {getVoterList,voters}=context;
+  const adminContext = useContext(AdminContext);
+  const { voters, getVoterList } = adminContext;
   useEffect(() => {
     getVoterList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <div>
       <h1 className="mb-8 text-3xl font-semibold mt-20">Voter Page</h1>
@@ -29,6 +29,7 @@ const voter = () =>{
         </Typography>
         <Divider flexItem />
       </Stack>     
+      {console.log(voters)}
       {Array.isArray(voters)&& voters.map((voter) => {
         return <VoterCard voter={voter} key={voter._id} />;
       })}
