@@ -6,6 +6,9 @@ const crypto = require("crypto");
 const { body, validationResult } = require("express-validator");
 require("dotenv").config();
 
+const hashField = (value) => {
+  return crypto.createHash("sha256").update(value).digest("hex");
+};
 
 // Route 1: Create a new voter
 router.post(
@@ -66,10 +69,8 @@ router.post("/login", async (req, res) => {
   try {
     let { email, voterId } = req.body; // Destructure email and voterId from req.body
 
-    const Approved = new approved();
-
-    email = Approved.hashField(email)
-    voterId = Approved.hashField(voterId)
+    email = hashField(email)
+    voterId = hashField(voterId)
     console.log({email, voterId})
     // Query the database with the original data
     let user = await approved.findOne({ email, voterId });
