@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const admin = require("../models/Admin");
 const voter = require("../models/Voter");
+const approved = require("../models/ApprovedVoter");
 
 require("dotenv").config();
 const { body, validationResult } = require("express-validator");
@@ -76,19 +77,17 @@ router.post(
         httpOnly: false,
       });
 
-      res.status(200).json({ 
-        message: "Admin logged in successfully", 
+      res.status(200).json({
+        message: "Admin logged in successfully",
         email: adminUser.adminEmail, // Use adminEmail property
-        id: adminUser.adminId // Use adminId property
-      }); 
-    } 
-    catch (error) {
+        id: adminUser.adminId, // Use adminId property
+      });
+    } catch (error) {
       console.error(error.message);
       res.status(500).send("Internal Server Error");
     }
   }
 );
-
 
 //Route 3: To fetch voter list
 router.get("/voterlist", async (req, res) => {
@@ -108,10 +107,10 @@ router.delete("/delete/:id", verifyAdminToken, async (req, res) => {
 
     // Check if the voter exists
     const existingVoter = await voter.findById(id);
-    
+
     if (!existingVoter) {
       return res.status(404).json({ error: "Voter not found" });
-    } 
+    }
 
     // Delete the voter from the database
     await voter.findByIdAndDelete(id);
@@ -123,26 +122,52 @@ router.delete("/delete/:id", verifyAdminToken, async (req, res) => {
   }
 });
 
+// Route 5: To approve voters and send them to another collection
+router.post("/approve/:id",verifyAdminToken,  async (req, res) => {
+  try {
+    const id = req.params.id;
 
-// Route 5: To fetch logged-in admin details
+    const user = await voter.findById(id);
+    if (!user) {
+      return res.status(404).json({ error: "Voter not found" });
+    }
+
+    //create new document
+    const approvedVoter = new approved({
+      email: user.email,
+      voterId: user.voterId,
+    });
+    //save the document
+    await approvedVoter.save();
+
+    //Delete the voter from original collection
+    await voter.findByIdAndDelete(id);
+
+    res.status(200).json({ message: "Voter Approved Successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Route 6: To fetch logged-in admin details
 router.get("/curr", verifyAdminToken, (req, res) => {
   const adminUser = req.adminUser;
   return res.status(200).json({
     message: "Admin is Still Logged in",
     email: adminUser.adminEmail,
-    id: adminUser.adminId
+    id: adminUser.adminId,
   });
 });
 
-// Route 5: Logout The Admin
-router.get("/logout", async (req, res) =>{
+// Route 7: Logout The Admin
+router.get("/logout", async (req, res) => {
   //clear cookie
   res.clearCookie("jwt");
 
   return res.json({
-    message:"Logout Successful"
-  })
+    message: "Logout Successful",
+  });
 });
-
 
 module.exports = router;

@@ -1,5 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import {ConnectButton} from "thirdweb/react";
+import { AALogin } from "../wallet/wallet";
 
 import {
   Box,
@@ -67,6 +69,9 @@ const userSidebar = () => {
                   </ListItemButton>
                 </ListItem>
               </Link>
+            </List>
+            <List sx={{ml:3}}>
+              <AALogin />
             </List>
           </Box>
         </Drawer>

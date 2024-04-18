@@ -14,16 +14,6 @@ const voter = () =>{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
-  const handleDeleteVoter = async (voterId) => {
-    try {
-      // Call the deleteVoter function from context with the voterId
-      await deleteVoter(voterId);
-    } catch (error) {
-      console.error("Error deleting voter:", error);
-      // Handle error: You might want to display an error message to the user
-    }
-  };
-
   return (
     <div>
       <h1 className="mb-8 text-3xl font-semibold mt-20">Voter Page</h1>
@@ -42,7 +32,7 @@ const voter = () =>{
       </Stack>     
       {console.log(voters)}
       {Array.isArray(voters)&& voters.map((voter) => {
-        return <VoterCard voter={voter} key={voter._id} onDelete={handleDeleteVoter}/>;
+        return <VoterCard voter={voter} key={voter._id} />;
       })}
     </div>
   );

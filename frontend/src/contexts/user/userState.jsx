@@ -8,6 +8,7 @@ const UserState = (props) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   if(stat==='connected'){
     setStatus(true);
+    
   }
   else{
     setStatus(false);

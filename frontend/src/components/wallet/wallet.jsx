@@ -23,7 +23,7 @@ export const AALogin = () => {
         chain={myChain}
         accountAbstraction={accountAbstraction}
         connectButton={{
-          label: "Enter Registered Email",
+          label: "Continue",
         }}
         connectModal={{
           showThirdwebBranding:false,

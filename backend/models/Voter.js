@@ -38,6 +38,7 @@ const voterSchema = new Schema({
     required: true,
     unique: true,
   },
+  
 });
 
 // Hashing logic for specific fields

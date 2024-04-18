@@ -1,9 +1,22 @@
-import React from 'react'
+import React, { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import UserContext from "../../contexts/user/userContext";
+import { useActiveWalletConnectionStatus } from "thirdweb/react";
 
 const userResults = () => {
-  return (
-    <div>userResults</div>
-  )
-}
+  let userContext = useContext(UserContext);
+  let navigate = useNavigate();
 
-export default userResults
+  const stat = useActiveWalletConnectionStatus();
+
+  const { setStatusHandler } = userContext;
+  useEffect(() => {
+    if (stat == "disconnected") {
+      setStatusHandler(stat);
+      navigate("/");
+    }
+  }, [stat]);
+  return <div>userResults</div>;
+};
+
+export default userResults;

@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import CountdownTimer from "./countdownTimer";
 import FaceRecognition from "./faceRecognition";
+import UserContext from "../../contexts/user/userContext";
+import { useActiveWalletConnectionStatus } from "thirdweb/react";
 
 const candidateList = () => {
   const navigate = useNavigate();

@@ -1,19 +1,35 @@
-import  { useState } from "react";
-import {useNavigate} from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Button } from "@mui/material";
 // eslint-disable-next-line no-unused-vars
-import {alpha}from "@mui/material/styles"
+import { alpha } from "@mui/material/styles";
+import UserContext from "../../contexts/user/userContext";
+import { useActiveWalletConnectionStatus } from "thirdweb/react";
 
 const userElections = () => {
   // eslint-disable-next-line no-unused-vars, react-hooks/rules-of-hooks
   const [election, setElection] = useState(true);
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const navigate = useNavigate();
-  const handleVote = (e)=>{
+
+  let userContext = useContext(UserContext);
+  let navigate = useNavigate();
+
+  const stat = useActiveWalletConnectionStatus();
+
+  const { setStatusHandler } = userContext;
+
+  const handleVote = (e) => {
     e.preventDefault();
 
-    navigate("/voting/candidates")
-  }
+    navigate("/voting/candidates");
+  };
+
+  useEffect(() => {
+    if (stat == "disconnected") {
+      setStatusHandler(stat);
+      navigate("/");
+    }
+  }, [stat]);
 
   return (
     <>
@@ -29,9 +45,9 @@ const userElections = () => {
               my: 3,
               display: "flex",
               justifyContent: "space-around",
-              backgroundImage: "url('https://static.vecteezy.com/system/resources/previews/029/593/602/non_2x/abstract-background-with-a-gradient-of-a-colorful-background-vector.jpg')",
+              backgroundImage:
+                "url('https://static.vecteezy.com/system/resources/previews/029/593/602/non_2x/abstract-background-with-a-gradient-of-a-colorful-background-vector.jpg')",
               backgroundRepeat: "no-repeat",
-             
             }}
           >
             <Box
@@ -41,11 +57,13 @@ const userElections = () => {
                 height: 500,
                 padding: 3,
                 my: 3,
-                backgroundColor:"rgba(255, 255, 255, 0.4)",
-                borderRadius: 4
+                backgroundColor: "rgba(255, 255, 255, 0.4)",
+                borderRadius: 4,
               }}
             >
-              <div className=" text-center text-3xl font-semibold mt-4">Election Name</div>
+              <div className=" text-center text-3xl font-semibold mt-4">
+                Election Name
+              </div>
               <img
                 src="https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067_640.png"
                 alt="img"
@@ -54,14 +72,17 @@ const userElections = () => {
                 className="my-4"
               />
               <div className="text-xl font-medium p-5">
-              <div>Location</div>
-              <div>Date</div>
-              <div>Time</div>
+                <div>Location</div>
+                <div>Date</div>
+                <div>Time</div>
               </div>
-              <Button variant="contained" color="success" sx={{width:"75%",mx:4, }} onClick={handleVote}>
-                <div className="text-white-600 text-lg ">
-                  Vote
-                </div>
+              <Button
+                variant="contained"
+                color="success"
+                sx={{ width: "75%", mx: 4 }}
+                onClick={handleVote}
+              >
+                <div className="text-white-600 text-lg ">Vote</div>
               </Button>
             </Box>
           </Box>
