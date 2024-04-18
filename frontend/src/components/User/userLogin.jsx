@@ -19,6 +19,7 @@ const userLogin = () => {
   const [proceed, setProceed] = useState(false);
 
   const handleProceed= () => {
+    if (email && voterId)
       setProceed(!proceed)
   };
   const stat = useActiveWalletConnectionStatus();

@@ -25,24 +25,12 @@ const AdminState = (props) => {
 
   const deleteVoter = async (id) => {
     try {
-      // Get the JWT token from the cookie
-      const token = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("jwt="))
-        .split("=")[1];
-
-        console.log(token)
-
-      if (!token) {
-        throw new Error("JWT token not found in cookie");
-      }
-
       const response = await fetch(`${host}/delete/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Include the JWT token in the Authorization header
         },
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -57,12 +45,35 @@ const AdminState = (props) => {
     }
   };
 
+  const approveVoter = async (id) => {
+    try {
+      const response = await fetch(`${host}/approve/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to Approve voter");
+      }
+
+      setVoterList((prevVoters) =>
+        prevVoters.filter((voter) => voter._id !== id)
+      );
+    } catch (error) {
+      console.error("Error Approving voter:", error);
+    }
+  };
+
   return (
     <AdminContext.Provider
       value={{
         voterList,
         getVoterList,
         deleteVoter,
+        approveVoter
       }}
     >
       {props.children}

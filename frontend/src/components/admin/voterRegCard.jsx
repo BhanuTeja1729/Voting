@@ -15,17 +15,21 @@ import { useContext } from "react";
 
 const voterRegCard = (props) => {
   const adminContext = useContext(AdminContext);
-  const { deleteVoter } = adminContext;
+  const { deleteVoter, approveVoter } = adminContext;
   const { voter } = props;
   var cName = voter.voterFirstName + " " + voter.voterLastName;
   var cWardNo = "1";
   var cParty = "Pammi Sangha";
 
   const handleDelete = () => {
-    console.log(voter._id);
+    
     deleteVoter(voter._id);
     
   };
+
+  const handleApprove = () => {
+    approveVoter(voter._id)
+  }
   return (
     <>
       {console.log(voter)}
@@ -88,6 +92,7 @@ const voterRegCard = (props) => {
                 variant="contained"
                 color="success"
                 className="absolute top-0 right-0"
+                onClick={handleApprove}
                 sx={{ maxHeight: 50, maxWidth: 350 }}
               >
                 <CheckIcon />

@@ -6,7 +6,7 @@ import UserContext from "../../contexts/user/userContext";
 import { useActiveWalletConnectionStatus } from "thirdweb/react";
 
 const userGuidelines = () => {
-  let location = useLocation();
+
   let userContext = useContext(UserContext);
   let navigate = useNavigate();
 

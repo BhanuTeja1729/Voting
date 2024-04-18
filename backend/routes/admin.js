@@ -123,7 +123,7 @@ router.delete("/delete/:id", verifyAdminToken, async (req, res) => {
 });
 
 // Route 5: To approve voters and send them to another collection
-router.post("/approve/:id",verifyAdminToken,  async (req, res) => {
+router.post("/approve/:id", verifyAdminToken, async (req, res) => {
   try {
     const id = req.params.id;
 
@@ -146,7 +146,7 @@ router.post("/approve/:id",verifyAdminToken,  async (req, res) => {
     res.status(200).json({ message: "Voter Approved Successfully" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Voter Not Approved" });
   }
 });
 

@@ -63,6 +63,7 @@ voterSchema.methods.hashField = function (value) {
   return crypto.createHash("sha256").update(value).digest("hex");
 };
 
+
 const Voter = mongoose.model("voter", voterSchema);
 
 module.exports = Voter;
