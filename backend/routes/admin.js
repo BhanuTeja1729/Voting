@@ -4,47 +4,13 @@ const jwt = require("jsonwebtoken");
 const admin = require("../models/Admin");
 const voter = require("../models/Voter");
 const approved = require("../models/ApprovedVoter");
+const candidate = require("../models/Candidates");
 
 const { encryptData, decryptData } = require("../utils/encryption");
 
 require("dotenv").config();
 const { body, validationResult } = require("express-validator");
 const { verifyAdminToken } = require("../middleware/auth");
-
-//Route 1: To register a new admin
-// router.post(
-//   "/register",
-//   body("email", "Enter a valid email").isEmail(),
-//   body("password", "Password must be atleast 6 characters").isLength({
-//     min: 6,
-//   }),
-//   async (req, res) => {
-//     try {
-//       const { email, password } = req.body;
-
-//       const errors = validationResult(req);
-//       if (!errors.isEmpty()) {
-//         return res.status(400).json({ errors: errors.array() });
-//       }
-
-//       let adminUser = await admin.findOne({ email });
-//       if (adminUser) {
-//         return res.status(400).json({ error: "Admin already exists" });
-//       }
-
-//       adminUser = new admin({
-//         email,
-//         password,
-//       });
-
-//       await adminUser.save();
-//       res.status(200).json({ message: "Admin registered successfully" });
-//     } catch (error) {
-//       console.error(error.message);
-//       res.status(500).send("Internal Server Error");
-//     }
-//   }
-// );
 
 //Route 2: To login an admin
 router.post(
@@ -92,25 +58,9 @@ router.post(
 );
 
 //Route 3: To fetch voter list
-router.get("/voterlist", async (req, res) => {
+router.get("/voterlist", verifyAdminToken,async (req, res) => {
   try {
-    // retreive encrypted data from db
     const voters = await voter.find({});
-
-    //decrypt each encrypted field for each voter
-    // const decryptedVoters = encryptedVoters.map((voter) => {
-    //   return {
-    //     voterId: decryptData(voter.voterId),
-    //     voterFirstName: voter.voterFirstName,
-    //     voterLastName: voter.voterLastName,
-    //     aadharNumber: decryptData(voter.aadharNumber),
-    //     dateOfBirth: voter.dateOfBirth,
-    //     email: decryptData(voter.email),
-    //     phoneNumber: decryptData(voter.phoneNumber),
-    //     imgUrl: voter.imgUrl,
-    //   };
-    // });
-
     res.json(voters);
   } catch (error) {
     console.error(error.message);
@@ -170,7 +120,50 @@ router.post("/approve/:id", verifyAdminToken, async (req, res) => {
   }
 });
 
-// Route 6: To fetch logged-in admin details
+//Route 6: Add Candidates to Mongo DB
+router.post("/create", verifyAdminToken, async (req, res) => {
+  const { candidateFirstName, candidateLastName, wardNo, party, imgUrl } =
+    req.body;
+
+  try {
+    const existingCandidate = await candidate.findOne({
+      $or: [
+        { candidateFirstName: candidateFirstName },
+        { candidateLastName: candidateLastName },
+      ],
+    });
+    if (existingCandidate) {
+      return res.status(400).json({ error: "Candidate Already Exists" });
+    }
+
+    const newCandidate = new candidate({
+      candidateFirstName,
+      candidateLastName,
+      wardNo,
+      party,
+      imgUrl,
+    });
+
+    await newCandidate.save();
+    res.status(201).json({ newCandidate, message: "New Candidate Registered" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+//Route 7: Fetch the registered candidate details
+router.get("/candidatelist", verifyAdminToken,async (req, res) => {
+  try {
+    const candidates = await candidate.find({});
+    res.json(candidates);
+  } catch (error) {
+    console.error(error.message);
+    res
+      .status(500)
+      .json({ error: "Error Fetching Candidate List, Try Again Later" });
+  }
+});
+// Route 8: To fetch logged-in admin details
 router.get("/curr", verifyAdminToken, (req, res) => {
   const adminUser = req.adminUser;
   return res.status(200).json({
@@ -180,7 +173,7 @@ router.get("/curr", verifyAdminToken, (req, res) => {
   });
 });
 
-// Route 7: Logout The Admin
+// Route 8: Logout The Admin
 router.get("/logout", async (req, res) => {
   //clear cookie
   res.clearCookie("jwt");

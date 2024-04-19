@@ -53,37 +53,6 @@ router.post(
         imgUrl,
       });
 
-      // try {
-      //   //encrypt sensitive fields
-      //   const encryptedVoterId = encryptData(voterId);
-      //   const encryptedEmail = encryptData(email);
-      //   const encryptedPhoneNumber = encryptData(phoneNumber);
-      //   const encryptedAadharNumber = encryptData(aadharNumber);
-
-      //   console.log("data Encrypted")
-
-      //   // Check if a user with the same voterId or aadharNumber already exists
-      //   const existingUser = await voter.findOne({
-      //     $or: [
-      //       { voterId: encryptedVoterId },
-      //       { aadharNumber: encryptedAadharNumber },
-      //     ],
-      //   });
-      //   if (existingUser) {
-      //     return res.status(400).json({ error: "User already exists" });
-      //   }
-
-      //   const newVoter = new voter({
-      //     voterId: encryptedVoterId,
-      //     voterFirstName,
-      //     voterLastName,
-      //     aadharNumber: encryptedAadharNumber,
-      //     dateOfBirth,
-      //     email: encryptedEmail,
-      //     phoneNumber: encryptedPhoneNumber,
-      //     imgUrl,
-      //   });
-
       await newVoter.save();
       res.status(201).json({ newVoter, message: "Registered Successfully" });
     } catch (error) {

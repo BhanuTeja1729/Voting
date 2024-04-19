@@ -4,12 +4,14 @@ import AdminContext from "./adminContext";
 const AdminState = (props) => {
   const host = "http://localhost:5000/admin";
   const [voterList, setVoterList] = useState([]);
+  const [candidateList, setCandidateList] = useState([]);
 
   const getVoterList = async () => {
     console.log("test");
     try {
       const res = await fetch(`${host}/voterlist`, {
         method: "GET",
+        credentials: "include",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -59,11 +61,28 @@ const AdminState = (props) => {
         throw new Error("Failed to Approve voter");
       }
 
-      setVoterList((prevVoters) =>
-        prevVoters.filter((voter) => voter._id !== id)
-      );
+      c
     } catch (error) {
       console.error("Error Approving voter:", error);
+    }
+  };
+
+  const getCandidateList = async () => {
+    console.log("test");
+    try {
+      const res = await fetch(`${host}/candidatelist`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+      console.log(data);
+      setCandidateList(data);
+    } catch (error) {
+      console.error(error.message);
     }
   };
 
@@ -73,7 +92,9 @@ const AdminState = (props) => {
         voterList,
         getVoterList,
         deleteVoter,
-        approveVoter
+        approveVoter,
+        candidateList,
+        getCandidateList
       }}
     >
       {props.children}

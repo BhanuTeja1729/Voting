@@ -28,15 +28,6 @@ const userSignup = () => {
 
   const navigate = useNavigate();
 
-  //Button Color Style
-  // const ColorButton = styled(Button)(({ theme }) => ({
-  //   color: theme.palette.getContrastText(amber["500"]),
-  //   backgroundColor: amber["500"],
-  //   '&:hover': {
-  //     backgroundColor: amber["900"],
-  //   },
-  // }));
-
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
     clipPath: "inset(50%)",
