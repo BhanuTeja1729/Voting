@@ -2,13 +2,10 @@ const express = require("express");
 const router = express.Router();
 const voter = require("../models/Voter");
 const approved = require("../models/ApprovedVoter");
-const crypto = require("crypto");
 const { body, validationResult } = require("express-validator");
 require("dotenv").config();
 
-const hashField = (value) => {
-  return crypto.createHash("sha256").update(value).digest("hex");
-};
+const { encryptData, decryptData } = require("../utils/encryption.js");
 
 // Route 1: Create a new voter
 router.post(
@@ -56,6 +53,37 @@ router.post(
         imgUrl,
       });
 
+      // try {
+      //   //encrypt sensitive fields
+      //   const encryptedVoterId = encryptData(voterId);
+      //   const encryptedEmail = encryptData(email);
+      //   const encryptedPhoneNumber = encryptData(phoneNumber);
+      //   const encryptedAadharNumber = encryptData(aadharNumber);
+
+      //   console.log("data Encrypted")
+
+      //   // Check if a user with the same voterId or aadharNumber already exists
+      //   const existingUser = await voter.findOne({
+      //     $or: [
+      //       { voterId: encryptedVoterId },
+      //       { aadharNumber: encryptedAadharNumber },
+      //     ],
+      //   });
+      //   if (existingUser) {
+      //     return res.status(400).json({ error: "User already exists" });
+      //   }
+
+      //   const newVoter = new voter({
+      //     voterId: encryptedVoterId,
+      //     voterFirstName,
+      //     voterLastName,
+      //     aadharNumber: encryptedAadharNumber,
+      //     dateOfBirth,
+      //     email: encryptedEmail,
+      //     phoneNumber: encryptedPhoneNumber,
+      //     imgUrl,
+      //   });
+
       await newVoter.save();
       res.status(201).json({ newVoter, message: "Registered Successfully" });
     } catch (error) {
@@ -69,9 +97,6 @@ router.post("/login", async (req, res) => {
   try {
     let { email, voterId } = req.body; // Destructure email and voterId from req.body
 
-    email = hashField(email)
-    voterId = hashField(voterId)
-    console.log({email, voterId})
     // Query the database with the original data
     let user = await approved.findOne({ email, voterId });
 

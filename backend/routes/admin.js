@@ -5,6 +5,8 @@ const admin = require("../models/Admin");
 const voter = require("../models/Voter");
 const approved = require("../models/ApprovedVoter");
 
+const { encryptData, decryptData } = require("../utils/encryption");
+
 require("dotenv").config();
 const { body, validationResult } = require("express-validator");
 const { verifyAdminToken } = require("../middleware/auth");
@@ -92,11 +94,29 @@ router.post(
 //Route 3: To fetch voter list
 router.get("/voterlist", async (req, res) => {
   try {
+    // retreive encrypted data from db
     const voters = await voter.find({});
+
+    //decrypt each encrypted field for each voter
+    // const decryptedVoters = encryptedVoters.map((voter) => {
+    //   return {
+    //     voterId: decryptData(voter.voterId),
+    //     voterFirstName: voter.voterFirstName,
+    //     voterLastName: voter.voterLastName,
+    //     aadharNumber: decryptData(voter.aadharNumber),
+    //     dateOfBirth: voter.dateOfBirth,
+    //     email: decryptData(voter.email),
+    //     phoneNumber: decryptData(voter.phoneNumber),
+    //     imgUrl: voter.imgUrl,
+    //   };
+    // });
+
     res.json(voters);
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Internal Server Error");
+    res
+      .status(500)
+      .json({ error: "Error Fetching Voter List, Try Again Later" });
   }
 });
 

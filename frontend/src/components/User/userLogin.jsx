@@ -8,6 +8,9 @@ import {
   useActiveAccount,
 } from "thirdweb/react";
 
+//api functions
+import { login } from "../../api/voter";
+
 const userLogin = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
@@ -17,10 +20,21 @@ const userLogin = () => {
   const [email, setEmail] = useState("");
   const [voterId, setVoterId] = useState("");
   const [proceed, setProceed] = useState(false);
+  const [msg, setMsg] = useState(false);
 
-  const handleProceed= () => {
-    if (email && voterId)
-      setProceed(!proceed)
+  const handleProceed = async () => {
+    try {
+      const res = await login(email, voterId);
+      if (res && res.error) {
+        console.error(res.error);
+        setMsg(true);
+      } else {
+        console.log(res.message);
+        setProceed(!proceed);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
   };
   const stat = useActiveWalletConnectionStatus();
   const acc = useActiveAccount();
@@ -71,7 +85,7 @@ const userLogin = () => {
               Proceed
             </Button>
           </Box>
-          { proceed ? (
+          {proceed ? (
             <Box>
               <AALogin />
             </Box>

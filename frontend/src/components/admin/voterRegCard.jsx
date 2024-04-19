@@ -17,19 +17,19 @@ const voterRegCard = (props) => {
   const adminContext = useContext(AdminContext);
   const { deleteVoter, approveVoter } = adminContext;
   const { voter } = props;
-  var cName = voter.voterFirstName + " " + voter.voterLastName;
-  var cWardNo = "1";
-  var cParty = "Pammi Sangha";
+  var vName = voter.voterFirstName + " " + voter.voterLastName;
+  var vEmail = voter.email;
+  var vPhone = voter.phoneNumber;
+  var vId = voter.voterId;
+  var vAn = voter.aadharNumber;
 
   const handleDelete = () => {
-    
     deleteVoter(voter._id);
-    
   };
 
   const handleApprove = () => {
-    approveVoter(voter._id)
-  }
+    approveVoter(voter._id);
+  };
   return (
     <>
       {console.log(voter)}
@@ -46,13 +46,19 @@ const voterRegCard = (props) => {
               <Box>
                 <List sx={{ width: "100%", maxWidth: 360, my: 2 }}>
                   <ListItem>
-                    <ListItemText primary={`Name: ${cName}`} />
+                    <ListItemText primary={`Name: ${vName}`} />
                   </ListItem>
                   <ListItem>
-                    <ListItemText primary={`Ward No: ${cWardNo}`} />
+                    <ListItemText primary={`Email: ${vEmail}`} />
                   </ListItem>
                   <ListItem>
-                    <ListItemText primary={`Party: ${cParty}`} />
+                    <ListItemText primary={`Phone Number: ${vPhone}`} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary={`Voter Id: ${vId}`} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary={`Aadhar Number: ${vAn}`} />
                   </ListItem>
                 </List>
               </Box>
@@ -67,13 +73,19 @@ const voterRegCard = (props) => {
               <Box>
                 <List sx={{ width: "100%", maxWidth: 360, my: 2 }}>
                   <ListItem>
-                    <ListItemText primary={`Name: ${cName}`} />
+                    <ListItemText primary={`Name: ${vName}`} />
                   </ListItem>
                   <ListItem>
-                    <ListItemText primary={`Ward No: ${cWardNo}`} />
+                    <ListItemText primary={`Email: ${vEmail}`} />
                   </ListItem>
                   <ListItem>
-                    <ListItemText primary={`Party: ${cParty}`} />
+                    <ListItemText primary={`Phone Number: ${vPhone}`} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary={`Voter Id: ${vId}`} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary={`Aadhar Number: ${vAn}`} />
                   </ListItem>
                 </List>
               </Box>
