@@ -6,7 +6,7 @@ import AdminContext from "../../contexts/admin/adminContext";
 
 const voter = () => {
   const adminContext = useContext(AdminContext);
-  const { voterList, getVoterList, deleteVoter } = adminContext;
+  const { voterList, getVoterList } = adminContext;
   const voters = voterList;
   useEffect(() => {
     getVoterList();

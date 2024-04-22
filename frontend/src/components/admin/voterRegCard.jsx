@@ -1,3 +1,4 @@
+"use Client";
 import {
   Divider,
   Card,
@@ -11,12 +12,25 @@ import {
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import CheckIcon from "@mui/icons-material/Check";
 import AdminContext from "../../contexts/admin/adminContext";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
 //Contract
+import { createThirdwebClient, getContract } from "thirdweb";
+import { defineChain } from "thirdweb/chains";
 import { resolveMethod } from "thirdweb";
 import { useReadContract } from "thirdweb/react";
-import contract from "../../contracts/voter";
+// import contract from "../../contracts/voter";
+
+const client = createThirdwebClient({
+  clientId: "250f4b19ef5e2aa207e6efd1c063c15f",
+});
+
+// connect to your contract
+const contract = getContract({
+  client,
+  chain: defineChain(80002),
+  address: "0xEdbD70ee113790B97CE5aAC3E3D584A29FfA134b",
+});
 
 const voterRegCard = (props) => {
   const adminContext = useContext(AdminContext);
@@ -28,16 +42,8 @@ const voterRegCard = (props) => {
   var vId = voter.voterId;
   var vAn = voter.aadharNumber;
 
-  let _voterId = "1";
-  let _email = "pammi@gmail.com";
-
-  const checkVoter = () => {
-    const { data, isLoading } = useReadContract({
-      contract,
-      method: resolveMethod("checkVoter"),
-      params: [_voterId, _email],
-    });
-  };
+  var _voterId = "1";
+  var _email = "pammi@gmail.com";
 
   const handleDelete = () => {
     if (voter && voter._id) {
@@ -55,9 +61,12 @@ const voterRegCard = (props) => {
     }
   };
 
-  useEffect(() => {
-    console.log(checkVoter(_voterId, _email));
-  }, []);
+  const data = useReadContract({
+    contract,
+    method: resolveMethod("totalVoters"),
+    params: [],
+  });
+
   return (
     <>
       {/* {console.log(voter)} */}
@@ -140,6 +149,7 @@ const voterRegCard = (props) => {
             </div>
           </Stack>
         </Card>
+        <Button onClick={console.log(data)}>Click Me</Button>
       </div>
     </>
   );
