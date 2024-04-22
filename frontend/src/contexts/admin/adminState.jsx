@@ -1,13 +1,19 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import AdminContext from "./adminContext";
+
+//contracts
+import { resolveMethod } from "thirdweb";
+import { useReadContract } from "thirdweb/react";
+import contract from "../../contracts/voter";
+
 const AdminState = (props) => {
   const host = "http://localhost:5000/admin";
   const [voterList, setVoterList] = useState([]);
   const [candidateList, setCandidateList] = useState([]);
 
   const getVoterList = async () => {
-    console.log("test");
+    // console.log("test");
     try {
       const res = await fetch(`${host}/voterlist`, {
         method: "GET",
@@ -18,7 +24,7 @@ const AdminState = (props) => {
         },
       });
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
       setVoterList(data);
     } catch (error) {
       console.error(error.message);
@@ -61,14 +67,14 @@ const AdminState = (props) => {
         throw new Error("Failed to Approve voter");
       }
 
-      c
+      c;
     } catch (error) {
       console.error("Error Approving voter:", error);
     }
   };
 
   const getCandidateList = async () => {
-    console.log("test");
+    // console.log("test");
     try {
       const res = await fetch(`${host}/candidatelist`, {
         method: "GET",
@@ -86,6 +92,15 @@ const AdminState = (props) => {
     }
   };
 
+  // const checkVoter = () => {
+  //   const { data, isLoading } = useReadContract({
+  //     contract,
+  //     method: resolveMethod("checkVoter"),
+  //     params: [_voterId, _email],
+  //   });
+  //   return { data, isLoading };
+  // };
+
   return (
     <AdminContext.Provider
       value={{
@@ -94,7 +109,8 @@ const AdminState = (props) => {
         deleteVoter,
         approveVoter,
         candidateList,
-        getCandidateList
+        getCandidateList,
+        // checkVoter,
       }}
     >
       {props.children}

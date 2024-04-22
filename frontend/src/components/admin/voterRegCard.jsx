@@ -11,7 +11,12 @@ import {
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import CheckIcon from "@mui/icons-material/Check";
 import AdminContext from "../../contexts/admin/adminContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+
+//Contract
+import { resolveMethod } from "thirdweb";
+import { useReadContract } from "thirdweb/react";
+import contract from "../../contracts/voter";
 
 const voterRegCard = (props) => {
   const adminContext = useContext(AdminContext);
@@ -23,16 +28,39 @@ const voterRegCard = (props) => {
   var vId = voter.voterId;
   var vAn = voter.aadharNumber;
 
+  let _voterId = "1";
+  let _email = "pammi@gmail.com";
+
+  const checkVoter = () => {
+    const { data, isLoading } = useReadContract({
+      contract,
+      method: resolveMethod("checkVoter"),
+      params: [_voterId, _email],
+    });
+  };
+
   const handleDelete = () => {
-    deleteVoter(voter._id);
+    if (voter && voter._id) {
+      deleteVoter(voter._id);
+    } else {
+      console.error("Voter or voter._id is undefined.");
+    }
   };
 
   const handleApprove = () => {
-    approveVoter(voter._id);
+    if (voter && voter._id) {
+      approveVoter(voter._id);
+    } else {
+      console.error("Voter or voter._id is undefined.");
+    }
   };
+
+  useEffect(() => {
+    console.log(checkVoter(_voterId, _email));
+  }, []);
   return (
     <>
-      {console.log(voter)}
+      {/* {console.log(voter)} */}
       <div className="shadow w-4/5 text-xl">
         <Card sx={{ p: 3 }}>
           <Stack spacing={3} direction={"row"} className="flex flex-row">

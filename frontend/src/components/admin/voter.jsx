@@ -1,18 +1,17 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useEffect,useContext } from "react";
+import { useEffect, useContext } from "react";
 import { Stack, Typography, Divider } from "@mui/material";
 import VoterCard from "./voterRegCard";
 import AdminContext from "../../contexts/admin/adminContext";
 
-
-const voter = () =>{
+const voter = () => {
   const adminContext = useContext(AdminContext);
   const { voterList, getVoterList, deleteVoter } = adminContext;
   const voters = voterList;
   useEffect(() => {
     getVoterList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
+  }, []);
 
   return (
     <div>
@@ -29,11 +28,12 @@ const voter = () =>{
           API Fetched Data
         </Typography>
         <Divider flexItem />
-      </Stack>     
-      {console.log(voters)}
-      {Array.isArray(voters)&& voters.map((voter) => {
-        return <VoterCard voter={voter} key={voter._id} />;
-      })}
+      </Stack>
+      {/* {console.log(voters)} */}
+      {Array.isArray(voters) &&
+        voters.map((voter) => {
+          return <VoterCard voter={voter} key={voter._id} />;
+        })}
     </div>
   );
 };
