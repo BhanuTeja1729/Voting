@@ -22,7 +22,7 @@ import { useReadContract } from "thirdweb/react";
 
 import contract from "../../contracts/voter";
 
-const voterRegCard =   (props) => {
+const voterRegCard = (props) => {
   const adminContext = useContext(AdminContext);
   const { deleteVoter, approveVoter } = adminContext;
   const { voter } = props;
@@ -45,24 +45,22 @@ const voterRegCard =   (props) => {
 
   const handleApprove = () => {
     if (voter && voter._id) {
-      approveVoter(voter._id);
+      // approveVoter(voter._id);
     } else {
       console.error("Voter or voter._id is undefined.");
     }
   };
-  
- 
-  const {data,isLoading} = useReadContract({
+
+
+  const { data, isLoading } = useReadContract({
     contract,
     method: resolveMethod("totalVoters"),
     params: [],
   });
-  if(!isLoading){
+  if (!isLoading) {
     console.log(data);
   }
 
-  
-  
 
   return (
     <>
@@ -146,7 +144,7 @@ const voterRegCard =   (props) => {
             </div>
           </Stack>
         </Card>
-        <Button >Click Me</Button>
+
       </div>
     </>
   );

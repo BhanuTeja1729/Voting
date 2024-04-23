@@ -67,7 +67,6 @@ const AdminState = (props) => {
         throw new Error("Failed to Approve voter");
       }
 
-      c;
     } catch (error) {
       console.error("Error Approving voter:", error);
     }
@@ -110,7 +109,7 @@ const AdminState = (props) => {
         approveVoter,
         candidateList,
         getCandidateList,
-        // checkVoter,
+
       }}
     >
       {props.children}

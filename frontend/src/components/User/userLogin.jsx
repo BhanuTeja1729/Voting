@@ -23,18 +23,19 @@ const userLogin = () => {
   const [msg, setMsg] = useState(false);
 
   const handleProceed = async () => {
-    try {
-      const res = await login(email, voterId);
-      if (res && res.error) {
-        console.error(res.error);
-        setMsg(true);
-      } else {
-        console.log(res.message);
-        setProceed(!proceed);
-      }
-    } catch (err) {
-      console.error(err.message);
-    }
+    // try {
+    //   const res = await login(email, voterId);
+    //   if (res && res.error) {
+    //     console.error(res.error);
+    //     setMsg(true);
+    //   } else {
+    //     console.log(res.message);
+    setProceed(!proceed);
+    //   }
+    // } catch (err) {
+    //   console.error(err.message);
+    // }
+
   };
   const stat = useActiveWalletConnectionStatus();
   const acc = useActiveAccount();

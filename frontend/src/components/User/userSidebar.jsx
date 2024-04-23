@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import {ConnectButton} from "thirdweb/react";
+import { useDisconnect, useActiveAccount, useActiveWallet } from "thirdweb/react";
 import { AALogin } from "../wallet/wallet";
 
 import {
@@ -23,7 +23,13 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 const drawerWidth = 240;
 
 const userSidebar = () => {
+  const { disconnect } = useDisconnect();
+  const wallet = useActiveWallet();
   const icons = [ListAltIcon, HowToVoteIcon, PublicOutlinedIcon];
+
+  const handleLogout = () => {
+    disconnect(wallet)
+  }
 
   return (
     <>
@@ -59,18 +65,16 @@ const userSidebar = () => {
             </List>
             <Divider />
             <List>
-              <Link to={"/"}>
-                <ListItem key={"Logout"} disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <LogoutOutlinedIcon fontSize="large" />
-                    </ListItemIcon>
-                    <ListItemText primary={"Logout"} />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
+              <ListItem key={"Logout"} disablePadding>
+                <ListItemButton onClick={handleLogout}>
+                  <ListItemIcon>
+                    <LogoutOutlinedIcon fontSize="large" />
+                  </ListItemIcon>
+                  <ListItemText primary={"Logout"} />
+                </ListItemButton>
+              </ListItem>
             </List>
-            <List sx={{ml:3}}>
+            <List sx={{ ml: 3 }}>
               <AALogin />
             </List>
           </Box>
