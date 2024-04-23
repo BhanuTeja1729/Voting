@@ -1,5 +1,5 @@
 import { defineChain } from "thirdweb";
 
-const myChain = defineChain(80002);
+const chain = defineChain(80002);
 
-export default myChain;
+export default chain;

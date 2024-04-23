@@ -15,24 +15,14 @@ import AdminContext from "../../contexts/admin/adminContext";
 import { useContext } from "react";
 
 //Contract
-import { createThirdwebClient, getContract } from "thirdweb";
-import { defineChain } from "thirdweb/chains";
+
 import { resolveMethod } from "thirdweb";
 import { useReadContract } from "thirdweb/react";
 // import contract from "../../contracts/voter";
 
-const client = createThirdwebClient({
-  clientId: "250f4b19ef5e2aa207e6efd1c063c15f",
-});
+import contract from "../../contracts/voter";
 
-// connect to your contract
-const contract = getContract({
-  client,
-  chain: defineChain(80002),
-  address: "0xEdbD70ee113790B97CE5aAC3E3D584A29FfA134b",
-});
-
-const voterRegCard = (props) => {
+const voterRegCard =   (props) => {
   const adminContext = useContext(AdminContext);
   const { deleteVoter, approveVoter } = adminContext;
   const { voter } = props;
@@ -60,12 +50,19 @@ const voterRegCard = (props) => {
       console.error("Voter or voter._id is undefined.");
     }
   };
-
-  const data = useReadContract({
+  
+ 
+  const {data,isLoading} = useReadContract({
     contract,
     method: resolveMethod("totalVoters"),
     params: [],
   });
+  if(!isLoading){
+    console.log(data);
+  }
+
+  
+  
 
   return (
     <>
@@ -149,7 +146,7 @@ const voterRegCard = (props) => {
             </div>
           </Stack>
         </Card>
-        <Button onClick={console.log(data)}>Click Me</Button>
+        <Button >Click Me</Button>
       </div>
     </>
   );

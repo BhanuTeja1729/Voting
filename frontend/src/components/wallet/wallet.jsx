@@ -1,6 +1,6 @@
 import { inAppWallet } from "thirdweb/wallets";
 import { ConnectButton } from "thirdweb/react";
-import  myChain  from "../../thirdweb/chain";
+import  chain  from "../../thirdweb/chain";
 import client from "../../thirdweb/client";
 const wallets = [inAppWallet({
   auth:{
@@ -9,7 +9,7 @@ const wallets = [inAppWallet({
 })];
 
 const accountAbstraction = {
-  chain: myChain,
+  chain: chain,
   factoryAddress: import.meta.env.VITE_APP_THIRDWEB_FACTORY_ADDRESS,
   gasless: true,
 };
@@ -20,7 +20,7 @@ export const AALogin = () => {
       <ConnectButton
         wallets={wallets}
         client={client}
-        chain={myChain}
+        chain={chain}
         accountAbstraction={accountAbstraction}
         connectButton={{
           label: "Continue",
