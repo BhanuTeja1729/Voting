@@ -20,20 +20,18 @@ import { resolveMethod } from "thirdweb";
 import { useReadContract } from "thirdweb/react";
 // import contract from "../../contracts/voter";
 
-import contract from "../../contracts/voter";
+import voterContract from "../../contracts/voter";
 
 const voterRegCard = (props) => {
   const adminContext = useContext(AdminContext);
   const { deleteVoter, approveVoter } = adminContext;
   const { voter } = props;
+
   var vName = voter.voterFirstName + " " + voter.voterLastName;
   var vEmail = voter.email;
   var vPhone = voter.phoneNumber;
   var vId = voter.voterId;
   var vAn = voter.aadharNumber;
-
-  var _voterId = "1";
-  var _email = "pammi@gmail.com";
 
   const handleDelete = () => {
     if (voter && voter._id) {
@@ -51,16 +49,15 @@ const voterRegCard = (props) => {
     }
   };
 
-
   const { data, isLoading } = useReadContract({
-    contract,
+    contract : voterContract,
     method: resolveMethod("totalVoters"),
     params: [],
   });
+
   if (!isLoading) {
     console.log(data);
   }
-
 
   return (
     <>
@@ -144,7 +141,6 @@ const voterRegCard = (props) => {
             </div>
           </Stack>
         </Card>
-
       </div>
     </>
   );

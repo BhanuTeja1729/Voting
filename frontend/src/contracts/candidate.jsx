@@ -3,13 +3,13 @@ import client from "../thirdweb/client.js";
 import chain from "../thirdweb/chain.js";
 
 // get a contract
-const voterContract = getContract({
+const candContract = getContract({
   client,
   chain: chain,
-  address: "0x95A1486Af079c64Fe681305D05146F2176B99C54",
+  address: "0xF74db5AB07A77cCd7b394810cA3bB04167EDf95C",
 });
 
 
-export default voterContract;
+export default candContract;
 
 
