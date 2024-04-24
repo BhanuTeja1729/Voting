@@ -16,23 +16,21 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import axios from "axios";
 
 import { create } from "../../api/admin";
-
 import CandidateCard from "./candidateCard";
 
 //contracts
-import { prepareContractCall, sendTransaction, resolveMethod } from "thirdweb";
 import {
   useActiveAccount,
   // useSendTransaction,
 } from "thirdweb/react";
-import candContract from "../../contracts/candidate";
 
 const candidate = () => {
   const adminContext = useContext(AdminContext);
-  const { candidateList, getCandidateList } = adminContext;
+  const { candidateList, getCandidateList, addCandidate, uploadFile } =
+    adminContext;
+
   const account = useActiveAccount();
 
   useEffect(() => {
@@ -54,24 +52,27 @@ const candidate = () => {
       const imgUrl = await uploadFile(
         "image",
         candidateFirstName,
-        candidateLastName
+        candidateLastName,
+        img
       );
+
       const _name = candidateFirstName + " " + candidateLastName;
       const _election_id = 1;
       const _ward_no = wardNo;
-      const _imgURL = imgUrl;
+      const _imgUrl = imgUrl;
       const _party = party;
-      const transaction = await prepareContractCall({
-        contract: candContract,
-        method: resolveMethod("addCandidate"),
-        params: [_name, _election_id, _ward_no, _imgURL, _party],
-      });
-      const { transactionHash } = await sendTransaction({
-        transaction,
-        account,
-      });
-      console.log(transactionHash);
-      if (transactionHash) {
+
+      console.log(account)
+
+      const add = await addCandidate(
+        _name,
+        _election_id,
+        _imgUrl,
+        _party,
+        _ward_no,
+        account
+      );
+      if (add) {
         try {
           const res = await create(
             candidateFirstName,
@@ -98,28 +99,6 @@ const candidate = () => {
       console.log(
         "Candidate Not Registered either blockchain error or cloudinary"
       );
-    }
-  };
-
-  const uploadFile = async (type, candidateFirstName, candidateLastName) => {
-    const data = new FormData();
-    data.append("file", type === "image" ? img : null);
-    data.append("upload_preset", "image_preset");
-
-    // Rename the file
-    const fileName = `${candidateFirstName}_${candidateLastName}`;
-    data.append("public_id", fileName);
-
-    try {
-      const resourceType = "image";
-      const cloudName = "dcpajsgwj";
-      const api = `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`;
-
-      const res = await axios.post(api, data);
-      const { secure_url } = res.data;
-      return secure_url;
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -221,7 +200,7 @@ const candidate = () => {
         <div className="ml-5 my-5 text-3xl font-semibold">
           <Typography variant="">Registered Candidates</Typography>
         </div>
-        {console.log(candidates)}
+        {/* {console.log(candidates)} */}
 
         <Box sx={{ overflowY: "auto", maxHeight: "36vh", p: 3 }}>
           {Array.isArray(candidates) &&

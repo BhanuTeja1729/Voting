@@ -1,19 +1,22 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 //Styles
 import { Button, TextField, Stack } from "@mui/material";
 
 import { styled } from "@mui/material/styles";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-
+import UserContext from "../../contexts/user/userContext";
 
 //api functions
 import { create } from "../../api/voter";
 
 const userSignup = () => {
+
+  const userContext = useContext(UserContext);
+  const {uploadFile} = userContext;
+
   const [voterFirstName, setFirstName] = useState("");
   const [voterLastName, setLastName] = useState("");
   const [voterId, setVoterId] = useState("");
@@ -39,7 +42,7 @@ const userSignup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const imgUrl = await uploadFile("image", voterFirstName, voterLastName);
+      const imgUrl = await uploadFile("image", voterFirstName, voterLastName, img);
       try {
         const res = await create({
           voterFirstName,
@@ -65,28 +68,7 @@ const userSignup = () => {
     }
   };
 
-  const uploadFile = async (type, firstName, lastName) => {
-    const data = new FormData();
-    data.append("file", type === "image" ? img : null);
-    data.append("upload_preset", "image_preset");
-
-    // Rename the file
-    const fileName = `${firstName}_${lastName}`;
-    data.append("public_id", fileName);
-
-    try {
-      const resourceType = "image";
-      const cloudName = "dcpajsgwj";
-      const api = `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`;
-
-      const res = await axios.post(api, data);
-      const { secure_url } = res.data;
-      return secure_url;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+  
   return (
     <>
       <h1 className="mb-8 text-center text-3xl font-semibold">

@@ -1,10 +1,14 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import AdminContext from "./adminContext";
+import axios from "axios";
 
 //contracts
 import voterContract from "../../contracts/voter";
+import candContract from "../../contracts/candidate";
 import { prepareContractCall, resolveMethod, sendTransaction } from "thirdweb";
+
+import { create } from "../../api/admin";
 
 const AdminState = (props) => {
   const host = "http://localhost:5000/admin";
@@ -65,7 +69,6 @@ const AdminState = (props) => {
       if (!response.ok) {
         throw new Error("Failed to Approve voter");
       }
-
     } catch (error) {
       console.error("Error Approving voter:", error);
     }
@@ -109,12 +112,61 @@ const AdminState = (props) => {
           hash: transactionHash,
           approved,
         });
-       
         return true;
       }
     } catch (error) {
       console.log("Voter Not Approved In Frontend");
       console.log(error);
+    }
+  };
+
+  const uploadFile = async (
+    type,
+    candidateFirstName,
+    candidateLastName,
+    img
+  ) => {
+    const data = new FormData();
+    data.append("file", type === "image" ? img : null);
+    data.append("upload_preset", "image_preset");
+
+    // Rename the file
+    const fileName = `${candidateFirstName}_${candidateLastName}`;
+    data.append("public_id", fileName);
+
+    try {
+      const resourceType = "image";
+      const cloudName = "dcpajsgwj";
+      const api = `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`;
+
+      const res = await axios.post(api, data);
+      const { secure_url } = res.data;
+      return secure_url;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addCandidate = async (props) => {
+    const { _name, _election_id, _ward_no, _imgUrl, _party, account } = await props;
+    try {
+      const transaction = await prepareContractCall({
+        contract: candContract,
+        method: resolveMethod("addCandidate"),
+        params: [_name, _election_id, _ward_no, _imgUrl, _party],
+      });
+      const { transactionHash } = await sendTransaction({
+        transaction,
+        account,
+      });
+      console.log(transactionHash);
+      if (transactionHash) {
+        console.log("Candidate Added to Blockchain");
+        return true;
+      }
+    } catch (error) {
+      console.log("Candidate Failed to Register on Blockchain");
+      console.error(error);
     }
   };
 
@@ -128,6 +180,8 @@ const AdminState = (props) => {
         candidateList,
         getCandidateList,
         handleApprove,
+        addCandidate,
+        uploadFile
       }}
     >
       {props.children}
