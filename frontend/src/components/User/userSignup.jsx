@@ -19,7 +19,7 @@ import { create } from "../../api/voter";
 const userSignup = () => {
   const [voterFirstName, setFirstName] = useState("");
   const [voterLastName, setLastName] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState(null);
+  const [dateOfBirth, setDateOfBirth] = useState("10-10-2002");
   const [voterId, setVoterId] = useState("");
   const [email, setEmail] = useState("");
   const [aadharNumber, setAadhar] = useState("");
@@ -144,7 +144,7 @@ const userSignup = () => {
         />
       </Stack>
 
-      <LocalizationProvider
+      {/* <LocalizationProvider
         color="primary"
         dateAdapter={AdapterDayjs}
         adapterLocale={"en-gb"}
@@ -158,7 +158,7 @@ const userSignup = () => {
           disableFuture
           inputFormat="DD-MM-YYYY"
         />
-      </LocalizationProvider>
+      </LocalizationProvider> */}
 
       <TextField
         type="text"
