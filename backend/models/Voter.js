@@ -26,7 +26,7 @@ const voterSchema = new Schema({
   },
   dateOfBirth: {
     type: String,
-    required: true,
+    default:"10-10-2002"
   },
   email: {
     type: String,

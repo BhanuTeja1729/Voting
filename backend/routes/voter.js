@@ -18,7 +18,6 @@ router.post(
     }),
     body("email", "Enter a valid email").isEmail(),
     body("phoneNumber", "Enter a valid phone number").isLength({ min: 10 }),
-    body("dateOfBirth", "Enter a valid date of birth").isDate(),
   ],
   async (req, res) => {
     const {
@@ -26,7 +25,6 @@ router.post(
       voterLastName,
       email,
       phoneNumber,
-      dateOfBirth,
       voterId,
       aadharNumber,
       imgUrl,
@@ -47,7 +45,6 @@ router.post(
         voterFirstName,
         voterLastName,
         aadharNumber,
-        dateOfBirth,
         email,
         phoneNumber,
         imgUrl,

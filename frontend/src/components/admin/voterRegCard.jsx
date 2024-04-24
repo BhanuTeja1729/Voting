@@ -67,11 +67,12 @@ const voterRegCard = (props) => {
       console.log({
         message: "Voter Approved Successfully",
         hash: transactionHash,
-        approved,
+        approved
       });
     }
     } catch (error) {
-      console.log("Voter Not Approved");
+      console.log("Voter Not Approved In Frontend");
+      console.log(error)
     }
   };
 

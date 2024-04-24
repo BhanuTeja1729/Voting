@@ -113,10 +113,10 @@ router.post("/approve/:id", verifyAdminToken, async (req, res) => {
     //Delete the voter from original collection
     await voter.findByIdAndDelete(id);
 
-    res.status(200).json({ message: "Voter Approved Successfully" });
+    res.status(200).json({ message: "Voter Approved Successfully on Database" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Voter Not Approved" });
+    res.status(500).json({ message: "Voter Not Approved" });
   }
 });
 

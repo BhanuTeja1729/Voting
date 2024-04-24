@@ -24,6 +24,6 @@ exports.verifyAdminToken = (req, res, next) => {
     next();
   } catch (e) {
     // Return unauthorized error
-    return res.status(403).json({ error: "Unauthorized" });
+    return res.status(403).json({ error: "Unauthorized, Please Login to Continue" });
   }
 };

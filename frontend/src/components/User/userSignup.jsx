@@ -19,7 +19,7 @@ import { create } from "../../api/voter";
 const userSignup = () => {
   const [voterFirstName, setFirstName] = useState("");
   const [voterLastName, setLastName] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("10-10-2002");
+  // const [dateOfBirth, setDateOfBirth] = useState("10-10-2002");
   const [voterId, setVoterId] = useState("");
   const [email, setEmail] = useState("");
   const [aadharNumber, setAadhar] = useState("");
@@ -50,7 +50,6 @@ const userSignup = () => {
           voterLastName,
           email,
           phoneNumber,
-          dateOfBirth,
           voterId,
           aadharNumber,
           imgUrl,
@@ -215,7 +214,7 @@ const userSignup = () => {
             !voterFirstName ||
             !email ||
             !phoneNumber ||
-            !dateOfBirth ||
+            // !dateOfBirth ||
             !voterId ||
             !aadharNumber
           }
