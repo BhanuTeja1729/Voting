@@ -1,17 +1,14 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 //Styles
 import { Button, TextField, Stack } from "@mui/material";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import "dayjs/locale/en-gb";
-import dayjs from "dayjs";
+
 import { styled } from "@mui/material/styles";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-// import { amber } from '@mui/material/colors';
+
 
 //api functions
 import { create } from "../../api/voter";
@@ -19,7 +16,6 @@ import { create } from "../../api/voter";
 const userSignup = () => {
   const [voterFirstName, setFirstName] = useState("");
   const [voterLastName, setLastName] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
   const [voterId, setVoterId] = useState("");
   const [email, setEmail] = useState("");
   const [aadharNumber, setAadhar] = useState("");
@@ -50,7 +46,6 @@ const userSignup = () => {
           voterLastName,
           email,
           phoneNumber,
-          dateOfBirth,
           voterId,
           aadharNumber,
           imgUrl,
@@ -144,21 +139,7 @@ const userSignup = () => {
         />
       </Stack>
 
-      <LocalizationProvider
-        color="primary"
-        dateAdapter={AdapterDayjs}
-        adapterLocale={"en-gb"}
-      >
-        <DatePicker
-          sx={{ mb: 4, width: "100%" }}
-          value={dateOfBirth}
-          onChange={(e) => {
-            setDateOfBirth(dayjs(e).format("DD-MM-YYYY"));
-          }}
-          disableFuture
-          inputFormat="DD-MM-YYYY"
-        />
-      </LocalizationProvider>
+      
 
       <TextField
         type="text"
@@ -215,7 +196,6 @@ const userSignup = () => {
             !voterFirstName ||
             !email ||
             !phoneNumber ||
-            !dateOfBirth ||
             !voterId ||
             !aadharNumber
           }

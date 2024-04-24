@@ -4,7 +4,7 @@ import UserContext from "./userContext";
 
 const UserState = (props) => {
   const [status, setStatus] = useState(false);
-  const [user, setUser] = useState(false);
+
   
   const setStatusHandler = (stat) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks

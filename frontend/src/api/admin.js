@@ -14,6 +14,7 @@ export const login = async ({ email, password } = {}) => {
     });
 
     const response = await res.json();
+    console.log(response.mesasge);
     return response;
   } catch (error) {
     throw new Error(`Cannot Login at This Time. ${error}`);
