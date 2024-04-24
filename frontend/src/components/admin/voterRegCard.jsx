@@ -20,7 +20,7 @@ import { prepareContractCall, resolveMethod, sendTransaction, hexToNumber } from
 import {
   useActiveAccount,
   useReadContract,
-  useSendTransaction,
+  // useSendTransaction,
 } from "thirdweb/react";
 
 const voterRegCard = (props) => {

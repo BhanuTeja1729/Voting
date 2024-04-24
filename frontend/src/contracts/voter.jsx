@@ -9,7 +9,6 @@ const voterContract = getContract({
   address: "0x95A1486Af079c64Fe681305D05146F2176B99C54",
 });
 
-
 export default voterContract;
 
 
