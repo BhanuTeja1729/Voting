@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate, } from "react-router-dom";
 import { useDisconnect, useActiveAccount, useActiveWallet } from "thirdweb/react";
 import { AALogin } from "../wallet/wallet";
 import {
@@ -27,8 +27,10 @@ const adminSidebar = () => {
 
   const { disconnect } = useDisconnect();
   const wallet = useActiveWallet();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
+    navigate("/admin/login");
     disconnect(wallet)
   }
   const icons = [

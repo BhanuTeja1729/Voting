@@ -62,10 +62,14 @@ const voterRegCard = (props) => {
         transaction,
         account,
       });
+      if(transactionHash){
+      const approved = await approveVoter(voter._id);
       console.log({
         message: "Voter Approved Successfully",
         hash: transactionHash,
+        approved,
       });
+    }
     } catch (error) {
       console.log("Voter Not Approved");
     }
@@ -152,6 +156,7 @@ const voterRegCard = (props) => {
                 >
                   <DeleteOutlineOutlinedIcon />
                 </Button>
+                {console.log(voter._id)}
                 <Button
                   variant="contained"
                   color="success"
