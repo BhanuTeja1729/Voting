@@ -7,10 +7,12 @@ import axios from "axios";
 import voterContract from "../../contracts/voter";
 import candContract from "../../contracts/candidate";
 import { prepareContractCall, resolveMethod, sendTransaction } from "thirdweb";
+import { useActiveAccount } from "thirdweb/react";
 
 import { create } from "../../api/admin";
 
 const AdminState = (props) => {
+  const account = useActiveAccount();
   const host = "http://localhost:5000/admin";
   const [voterList, setVoterList] = useState([]);
   const [candidateList, setCandidateList] = useState([]);
@@ -94,7 +96,7 @@ const AdminState = (props) => {
   };
 
   const handleApprove = async (props) => {
-    const { _aadharno, _email, _imgUrl, _name, _id, voter, account } = props;
+    const { _aadharno, _email, _imgUrl, _name, _id, voter } = props;
     try {
       const transaction = await prepareContractCall({
         contract: voterContract,
@@ -148,7 +150,7 @@ const AdminState = (props) => {
   };
 
   const addCandidate = async (props) => {
-    const { _name, _election_id, _ward_no, _imgUrl, _party, account } = await props;
+    const { _name, _election_id, _ward_no, _imgUrl, _party } = await props;
     try {
       const transaction = await prepareContractCall({
         contract: candContract,
@@ -181,7 +183,7 @@ const AdminState = (props) => {
         getCandidateList,
         handleApprove,
         addCandidate,
-        uploadFile
+        uploadFile,
       }}
     >
       {props.children}

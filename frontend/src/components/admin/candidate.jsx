@@ -62,15 +62,14 @@ const candidate = () => {
       const _imgUrl = imgUrl;
       const _party = party;
 
-      console.log(account)
+      console.log(account);
 
       const add = await addCandidate(
         _name,
         _election_id,
         _imgUrl,
         _party,
-        _ward_no,
-        account
+        _ward_no
       );
       if (add) {
         try {
