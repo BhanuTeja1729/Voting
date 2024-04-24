@@ -3,9 +3,14 @@ import { useState } from "react";
 import AdminContext from "./adminContext";
 
 //contracts
-import { resolveMethod } from "thirdweb";
-import { useReadContract } from "thirdweb/react";
-import contract from "../../contracts/voter";
+import voterContract from "../../contracts/voter";
+import {
+  prepareContractCall,
+  resolveMethod,
+  sendTransaction,
+  
+} from "thirdweb";
+
 
 const AdminState = (props) => {
   const host = "http://localhost:5000/admin";
@@ -99,6 +104,33 @@ const AdminState = (props) => {
   //   });
   //   return { data, isLoading };
   // };
+   const handleApprove = async (props) => {
+    const {_aadharno,_email,_imgUrl,_name,_id,voter,account}=props
+     try {
+       const transaction = await prepareContractCall({
+         contract: voterContract,
+         method: resolveMethod("addVoter"),
+         params: [_id, _name, _aadharno, _email, _imgUrl],
+       });
+       const { transactionHash } = await sendTransaction({
+         transaction,
+         account,
+       });
+       if (transactionHash) {
+         const approved = await approveVoter(voter._id);
+         console.log({
+           message: "Voter Approved Successfully",
+           hash: transactionHash,
+           approved,
+         });
+         return true;
+       }
+     } catch (error) {
+       console.log("Voter Not Approved In Frontend");
+       console.log(error);
+     }
+     
+   };
 
   return (
     <AdminContext.Provider
@@ -109,7 +141,7 @@ const AdminState = (props) => {
         approveVoter,
         candidateList,
         getCandidateList,
-
+        handleApprove,
       }}
     >
       {props.children}

@@ -15,17 +15,15 @@ import AdminContext from "../../contexts/admin/adminContext";
 import { useContext } from "react";
 
 //Contract
-import voterContract from "../../contracts/voter";
-import { prepareContractCall, resolveMethod, sendTransaction, hexToNumber } from "thirdweb";
+// import voterContract from "../../contracts/voter";
+// import { prepareContractCall, resolveMethod, sendTransaction, hexToNumber } from "thirdweb";
 import {
   useActiveAccount,
-  useReadContract,
-  useSendTransaction,
 } from "thirdweb/react";
 
 const voterRegCard = (props) => {
   const adminContext = useContext(AdminContext);
-  const { deleteVoter, approveVoter } = adminContext;
+  const { deleteVoter,handleApprove } = adminContext;
   const { voter } = props;
 
   const account = useActiveAccount();
@@ -50,41 +48,38 @@ const voterRegCard = (props) => {
       console.error("Voter or voter._id is undefined.");
     }
   };
-
-  const handleApprove = async () => {
-    try {
-      const transaction = await prepareContractCall({
-        contract: voterContract,
-        method: resolveMethod("addVoter"),
-        params: [_id, _name, _aadharno, _email, _imgUrl],
-      });
-      const { transactionHash } = await sendTransaction({
-        transaction,
-        account,
-      });
-      if(transactionHash){
-      const approved = await approveVoter(voter._id);
-      console.log({
-        message: "Voter Approved Successfully",
-        hash: transactionHash,
-        approved
-      });
-    }
-    } catch (error) {
-      console.log("Voter Not Approved In Frontend");
-      console.log(error)
-    }
-  };
-
-  const { data, isLoading } = useReadContract({
-    contract: voterContract,
-    method: resolveMethod("totalVoters"),
-    params: [],
-  });
-
-  if (!isLoading) {
-    console.log(hexToNumber(data));
+  const handApprov = async () => {
+    const props = { _aadharno, _email, _id, _imgUrl, _name, account, voter };
+    let val= await handleApprove(props);
+    if(val){
+    console.log("Approved");}
   }
+  // const handleApprove = async () => {
+  //   try {
+  //     const transaction = await prepareContractCall({
+  //       contract: voterContract,
+  //       method: resolveMethod("addVoter"),
+  //       params: [_id, _name, _aadharno, _email, _imgUrl],
+  //     });
+  //     const { transactionHash } = await sendTransaction({
+  //       transaction,
+  //       account,
+  //     });
+  //     if(transactionHash){
+  //     const approved = await approveVoter(voter._id);
+  //     console.log({
+  //       message: "Voter Approved Successfully",
+  //       hash: transactionHash,
+  //       approved
+  //     });
+  //   }
+  //   } catch (error) {
+  //     console.log("Voter Not Approved In Frontend");
+  //     console.log(error)
+  //   }
+  // };
+
+  
 
   return (
     <>
@@ -162,7 +157,7 @@ const voterRegCard = (props) => {
                   variant="contained"
                   color="success"
                   className="absolute top-0 right-0"
-                  onClick={handleApprove}
+                  onClick={handApprov}
                   sx={{ maxHeight: 50, maxWidth: 350 }}
                 >
                   <CheckIcon />
