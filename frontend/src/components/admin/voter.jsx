@@ -7,8 +7,9 @@ import voterContract from "../../contracts/voter";
 import { resolveMethod, hexToNumber } from "thirdweb";
 import { useReadContract } from "thirdweb/react";
 const voter = () => {
+ 
   const adminContext = useContext(AdminContext);
-  const { voterList, getVoterList } = adminContext;
+  const { voterList, getVoterList} = adminContext;
   const voters = voterList;
   useEffect(() => {
     getVoterList();
@@ -19,7 +20,6 @@ const voter = () => {
     method: resolveMethod("totalVoters"),
     params: [],
   });
-
   if (!isLoading) {
     console.log(hexToNumber(data));
   }

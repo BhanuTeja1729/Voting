@@ -24,7 +24,7 @@ import {
 
 const voterRegCard = (props) => {
   const adminContext = useContext(AdminContext);
-  const { deleteVoter, handleApprove } = adminContext;
+  const { deleteVoter, handleApprove,getVoterList } = adminContext;
   const { voter } = props;
 
   const account = useActiveAccount();
@@ -36,15 +36,16 @@ const voterRegCard = (props) => {
   var vId = voter.voterId;
   var vAn = voter.aadharNumber;
 
-  var _id = "112";
-  var _name = "voter12";
-  var _aadharno = "ano";
-  var _email = "mail";
-  var _imgUrl = "url";
+  var _id = vId;
+  var _name = vName;
+  var _aadharno = vAn;
+  var _email = vEmail;
+  var _imgUrl = voter.imgUrl;
 
   const handleDelete = () => {
     if (voter && voter._id) {
       deleteVoter(voter._id);
+      getVoterList();
     } else {
       console.error("Voter or voter._id is undefined.");
     }
@@ -52,6 +53,7 @@ const voterRegCard = (props) => {
   const handApprov = async () => {
     const props = { _aadharno, _email, _id, _imgUrl, _name, account, voter };
     let val = await handleApprove(props);
+    getVoterList();
     if (val) {
       console.log("Approved");
     }

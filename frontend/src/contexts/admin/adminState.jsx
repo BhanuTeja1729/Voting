@@ -109,6 +109,7 @@ const AdminState = (props) => {
           hash: transactionHash,
           approved,
         });
+       
         return true;
       }
     } catch (error) {
