@@ -51,7 +51,7 @@ const voterRegCard = (props) => {
     }
   };
   const handApprov = async () => {
-    const props = { _aadharno, _email, _id, _imgUrl, _name, account, voter };
+    const props = { _aadharno, _email, _id, _imgUrl, _name, voter };
     let val = await handleApprove(props);
     getVoterList();
     if (val) {

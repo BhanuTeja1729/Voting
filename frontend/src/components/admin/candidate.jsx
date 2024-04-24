@@ -21,10 +21,7 @@ import { create } from "../../api/admin";
 import CandidateCard from "./candidateCard";
 
 //contracts
-import {
-  useActiveAccount,
-  // useSendTransaction,
-} from "thirdweb/react";
+import { useActiveAccount} from 'thirdweb/react'
 
 const candidate = () => {
   const adminContext = useContext(AdminContext);
@@ -62,15 +59,10 @@ const candidate = () => {
       const _imgUrl = imgUrl;
       const _party = party;
 
-      console.log(account);
+   
+      const props = { _name, _election_id, _ward_no, _imgUrl, _party };
 
-      const add = await addCandidate(
-        _name,
-        _election_id,
-        _imgUrl,
-        _party,
-        _ward_no
-      );
+      let add = await addCandidate(props);
       if (add) {
         try {
           const res = await create(
@@ -147,17 +139,36 @@ const candidate = () => {
                     required
                   />
                 </Stack>
-                <TextField
-                  type="text"
-                  variant="outlined"
-                  color="secondary"
-                  label="Ward. No"
-                  onChange={(e) => setWardNo(e.target.value)}
-                  value={wardNo}
-                  fullWidth
-                  required
-                  sx={{ mb: 4 }}
-                />
+                <Stack spacing={2} direction="row" sx={{ marginBottom: 4 }}>
+                  <TextField
+                    type="text"
+                    variant="outlined"
+                    color="secondary"
+                    label="Ward. No"
+                    onChange={(e) => setWardNo(e.target.value)}
+                    value={wardNo}
+                    fullWidth
+                    required
+                    sx={{ mb: 2 }}
+                  />
+                  <Box sx={{ mb: 8 }}>
+                    <FormControl fullWidth>
+                      <InputLabel>Election Id</InputLabel>
+                      <Select
+                        value={party}
+                        label="Party"
+                        onChange={(e) => setParty(e.target.value)}
+                      >
+                        {options.map((option) => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Box>
+                </Stack>
+
                 <Box sx={{ mb: 3 }}>
                   <FormControl fullWidth>
                     <InputLabel>Party</InputLabel>
