@@ -13,7 +13,7 @@ const voter = () => {
   useEffect(() => {
     getVoterList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [data]);
   const { data, isLoading } = useReadContract({
     contract: voterContract,
     method: resolveMethod("totalVoters"),
