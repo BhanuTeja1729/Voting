@@ -51,7 +51,7 @@ router.post(
         id: adminUser.adminId, // Use adminId property
       });
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       res.status(500).send("Internal Server Error");
     }
   }
