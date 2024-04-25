@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Stack, Card, CardContent, Button } from '@mui/material';
 
-const electionCard = () => {
+const electionCard = (item,index) => {
 
     return (
         <>

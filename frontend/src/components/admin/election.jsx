@@ -55,6 +55,8 @@ const election = () => {
   let structuredData = [];
 
 //Iterate over the length of the arrays (assuming they all have the same length)
+ if (electionList[0] !== undefined) {
+ 
 for (let i = 0; i < electionList[0].length; i++) {
     // Create an object to hold the values from each array
     let obj = {
@@ -65,7 +67,7 @@ for (let i = 0; i < electionList[0].length; i++) {
     // Push the object into the structured data array
     structuredData.push(obj);
 }
-
+ }
 // Now you have an array of objects where each object contains all three values
 console.log(structuredData);
 
@@ -131,7 +133,6 @@ console.log(structuredData);
         <div className='text-3xl font-medium'>
           Election List
         </div>
-        <ElectionCard />
       </Box>
 
     </>
