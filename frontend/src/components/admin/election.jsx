@@ -2,9 +2,12 @@ import { React, useState, useContext, useEffect } from 'react'
 
 import { Accordion, AccordionSummary, AccordionDetails, Stack, TextField, Box, Button } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ElectionCard from "./electionCard"
+import AdminContext from '../../contexts/admin/adminContext';
+
+//contract
 import { useActiveAccount, useReadContract } from 'thirdweb/react';
 import { resolveMethod,readContract } from 'thirdweb';
-import AdminContext from '../../contexts/admin/adminContext';
 import elecContract from '../../contracts/election';
 
 
@@ -15,9 +18,9 @@ const election = () => {
   const { addElection, setElectionList, electionList} = adminContext;
   const [electionName, setElectionName] = useState('')
   const [election_id, setElectionId] = useState('')
+
   //Use Effect to update electionList when it changes
   useEffect(() => { 
-
     console.log(electionList)
    }, [electionList])
 
@@ -33,6 +36,7 @@ const election = () => {
     setElectionList(data);
   };
 
+
   const handleCreate = async (e) => {
     e.preventDefault();
     let _election_id = election_id;
@@ -46,6 +50,24 @@ const election = () => {
     }
 
   }
+
+
+  let structuredData = [];
+
+//Iterate over the length of the arrays (assuming they all have the same length)
+for (let i = 0; i < electionList[0].length; i++) {
+    // Create an object to hold the values from each array
+    let obj = {
+        names: electionList[0][i],
+        id: electionList[1][i],
+        status: electionList[2][i]
+    };
+    // Push the object into the structured data array
+    structuredData.push(obj);
+}
+
+// Now you have an array of objects where each object contains all three values
+console.log(structuredData);
 
 
   return (
@@ -104,6 +126,13 @@ const election = () => {
 
         }
       </div>
+      
+      <Box sx={{mt:5, maxWidth:"100%"}}>
+        <div className='text-3xl font-medium'>
+          Election List
+        </div>
+        <ElectionCard />
+      </Box>
 
     </>
   );
