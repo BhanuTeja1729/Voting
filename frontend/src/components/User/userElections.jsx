@@ -2,7 +2,12 @@ import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button } from "@mui/material";
 // eslint-disable-next-line no-unused-vars
-import { alpha } from "@mui/material/styles";
+
+//contracts
+import elecContract from "../../contracts/election";
+import { resolveMethod, readContract } from "thirdweb";
+
+
 import UserContext from "../../contexts/user/userContext";
 import { useActiveWalletConnectionStatus } from "thirdweb/react";
 

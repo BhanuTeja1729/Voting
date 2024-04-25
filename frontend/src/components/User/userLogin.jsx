@@ -8,6 +8,10 @@ import {
   useActiveAccount,
 } from "thirdweb/react";
 
+//contracts
+import voterContract from "../../contracts/voter";
+import { readContract, resolveMethod } from "thirdweb";
+
 //api functions
 import { login } from "../../api/voter";
 
@@ -15,7 +19,7 @@ const userLogin = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
-  const { status, setStatusHandler } = userContext;
+  const { status, setStatusHandler, returnVoter, user } = userContext;
 
   const [email, setEmail] = useState("");
   const [voterId, setVoterId] = useState("");
@@ -23,18 +27,24 @@ const userLogin = () => {
   const [msg, setMsg] = useState(false);
 
   const handleProceed = async () => {
-    // try {
-    //   const res = await login(email, voterId);
-    //   if (res && res.error) {
-    //     console.error(res.error);
-    //     setMsg(true);
-    //   } else {
-    //     console.log(res.message);
-    setProceed(!proceed);
-    //   }
-    // } catch (err) {
-    //   console.error(err.message);
-    // }
+
+    try {
+      const data = await readContract({
+        contract: voterContract,
+        method: resolveMethod("checkVoter"),
+        params: [voterId, email]
+      })
+      if (data) {
+        returnVoter(voterId)
+        console.log(user)
+        setProceed(!proceed)
+      }
+      else {
+        console.log("Login With Proper Credentials")
+      }
+    } catch (error) {
+      console.log(error)
+    }
 
   };
   const stat = useActiveWalletConnectionStatus();

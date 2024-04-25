@@ -3,23 +3,61 @@ import { useState } from "react";
 import UserContext from "./userContext";
 import axios from "axios";
 
+//contracts
+import voterContract from "../../contracts/voter";
+import { readContract, resolveMethod } from "thirdweb";
+
+
 const UserState = (props) => {
   const [status, setStatus] = useState(false);
+  const [user, setUser] = useState({
+    voterId: "",
+    name: "",
+    aadhar: "",
+    email: "",
+    imgUrl: "",
+  });
 
-  
+
+  const returnVoter = async (_voterId) => {
+
+    try {
+      const data = await readContract({
+        contract:voterContract,
+        method: resolveMethod("returnVoter"),
+        params: [_voterId]
+      })
+      if(data){
+        setUser({
+          voterId: data.voterId,
+          name: data.name,
+          aadhar: data.aadharNo,
+          email: data.email,
+          imgUrl: data.imgUrl,
+        });
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+
+
+
   const setStatusHandler = (stat) => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  if(stat==='connected'){
-    setStatus(true);
-    
-  }
-  else{
-    setStatus(false);
-  }
-}
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    if (stat === 'connected') {
+      setStatus(true);
 
-const uploadFile = async (type, fName, lName, img) => {
-  const data = new FormData();
+    }
+    else {
+      setStatus(false);
+    }
+  }
+
+  const uploadFile = async (type, fName, lName, img) => {
+    const data = new FormData();
     data.append("file", type === "image" ? img : null);
     data.append("upload_preset", "image_preset");
 
@@ -38,12 +76,12 @@ const uploadFile = async (type, fName, lName, img) => {
     } catch (error) {
       console.log(error);
     }
-}
+  }
 
   return (
     <UserContext.Provider
       value={{
-        status,setStatusHandler,uploadFile
+        status, setStatusHandler, uploadFile, returnVoter, user
       }}
     >
       {props.children}
