@@ -3,16 +3,17 @@ import { Box, Stack, Card, CardContent, Button } from '@mui/material';
 import AdminContext from '../../contexts/admin/adminContext';
 
 
-const electionCard = ({data}) => {
+const electionCard = ({data, getElectionList}) => {
 
     const adminContext = useContext(AdminContext);
     const {switchElectionStatus, electionList} = adminContext;
 
-    const handleStatusChange = (index)=>{
-        const _id = index
+    const handleStatusChange = async (id)=>{
+        const _id = id
         const props = {_id}
-        const changed = switchElectionStatus(props)
+        const changed = await switchElectionStatus(props)
         if(changed){
+            getElectionList();
             console.log("Election status Updated")
         }
         else{
@@ -45,14 +46,14 @@ const electionCard = ({data}) => {
                         <Card key={item.id} sx={{ width: "15%" }}>
                             <CardContent sx={{ marginBottom: "1rem" }}>
                                 <Stack spacing={2} direction="column">
-                                    <div className="text-xl font-medium">{item.names}</div>
+                                    <div className="text-xl font-medium">{item.name}</div>
                                     <div className="text-xl font-medium">Status : {item.status.toString()}</div>
                                 </Stack>
                                 <Button
                                     variant="contained"
                                     color="success"
                                     sx={{ width: "100%", whiteSpace: 'nowrap', mt: 3 }}
-                                    onClick={handleStatusChange}
+                                    onClick={()=>handleStatusChange(item.id)}
                                 >
                                     Status Update
                                 </Button>

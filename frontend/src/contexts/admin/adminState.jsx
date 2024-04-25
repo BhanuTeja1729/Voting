@@ -200,6 +200,7 @@ const AdminState = (props) => {
 
   const switchElectionStatus = async (props) => {
     const { _id } = props;
+    console.log(_id)
     try {
       const transaction = await prepareContractCall({
         contract: elecContract,

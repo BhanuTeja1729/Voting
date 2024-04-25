@@ -60,8 +60,8 @@ const election = () => {
 for (let i = 0; i < electionList[0].length; i++) {
     // Create an object to hold the values from each array
     let obj = {
-        names: electionList[0][i],
-        id: electionList[1][i],
+        id: electionList[0][i],
+        name: electionList[1][i],
         status: electionList[2][i]
     };
     // Push the object into the structured data array
@@ -133,7 +133,7 @@ console.log(structuredData);
         <div className='text-3xl font-medium'>
           Election List
         </div>
-        <ElectionCard data={structuredData} />
+        <ElectionCard data={structuredData} getElectionList={getElectionList}/>
       </Box>
 
     </>
