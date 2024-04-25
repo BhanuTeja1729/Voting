@@ -3,7 +3,7 @@ import { React, useState, useContext, useEffect } from 'react'
 import { Accordion, AccordionSummary, AccordionDetails, Stack, TextField, Box, Button } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useActiveAccount, useReadContract } from 'thirdweb/react';
-import { resolveMethod } from 'thirdweb';
+import { resolveMethod,readContract } from 'thirdweb';
 import AdminContext from '../../contexts/admin/adminContext';
 import elecContract from '../../contracts/election';
 
@@ -13,19 +13,25 @@ const election = () => {
   const account = useActiveAccount();
   const adminContext = useContext(AdminContext);
   const { addElection, setElectionList, electionList} = adminContext;
-  // const elections = electionList
   const [electionName, setElectionName] = useState('')
   const [election_id, setElectionId] = useState('')
+  //Use Effect to update electionList when it changes
+  useEffect(() => { 
 
+    console.log(electionList)
+   }, [electionList])
 
-  const {data,isLoading} = useReadContract({
-    contract: elecContract,
-    method: resolveMethod("getElectionDetails"),
-    params: []
-  })
-  if(!isLoading){
-    setElectionList(data)
-  }
+   //Use Effect to get electionList on page load
+  useEffect(() => { getElectionList() }, [])
+
+  const getElectionList = async () => {
+    const data = await readContract({
+      contract: elecContract,
+      method: resolveMethod("getElectionDetails"),
+      params: [],
+    });
+    setElectionList(data);
+  };
 
   const handleCreate = async (e) => {
     e.preventDefault();
@@ -35,7 +41,8 @@ const election = () => {
     const added = await addElection(props)
     if (added) {
       console.log('Election Created Successfully')
-      console.log(electionList)
+      getElectionList()
+      // console.log(electionList)
     }
 
   }

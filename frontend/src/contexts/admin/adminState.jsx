@@ -190,7 +190,6 @@ const AdminState = (props) => {
       console.log(transactionHash);
       if (transactionHash) {
         console.log("Election Added to Blockchain");
-        getElectionList();
         return true;
       }
     } catch (error) {
@@ -199,15 +198,7 @@ const AdminState = (props) => {
     }
   }
 
-  const getElectionList = async () => {
-    const data = await readContract({
-      contract: elecContract,
-      method: resolveMethod("getElectionDetails"),
-      params: []
-    })
-    setElectionList(data);
-   
-  }
+  
 
   return (
     <AdminContext.Provider
@@ -222,7 +213,7 @@ const AdminState = (props) => {
         addCandidate,
         uploadFile,
         addElection,
-        getElectionList,
+        
         setElectionList,
         electionList
         
