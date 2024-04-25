@@ -6,8 +6,10 @@ import axios from "axios";
 //contracts
 import voterContract from "../../contracts/voter";
 import candContract from "../../contracts/candidate";
-import { prepareContractCall, resolveMethod, sendTransaction } from "thirdweb";
-import { useActiveAccount } from "thirdweb/react";
+import elecContract from "../../contracts/election";
+import { prepareContractCall, resolveMethod, sendTransaction, readContract } from "thirdweb";
+import { useActiveAccount, useReadContract } from "thirdweb/react";
+
 
 import { create } from "../../api/admin";
 
@@ -16,6 +18,7 @@ const AdminState = (props) => {
   const host = "http://localhost:5000/admin";
   const [voterList, setVoterList] = useState([]);
   const [candidateList, setCandidateList] = useState([]);
+  const [electionList, setElectionList] = useState([]);
 
   const getVoterList = async () => {
     // console.log("test");
@@ -88,7 +91,7 @@ const AdminState = (props) => {
         },
       });
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
       setCandidateList(data);
     } catch (error) {
       console.error(error.message);
@@ -172,6 +175,40 @@ const AdminState = (props) => {
     }
   };
 
+  const addElection = async (props) => {
+    const { _election_id, _election_name } = await props;
+    try {
+      const transaction = await prepareContractCall({
+        contract: elecContract,
+        method: resolveMethod("addElection"),
+        params: [_election_id, _election_name],
+      });
+      const { transactionHash } = await sendTransaction({
+        transaction,
+        account,
+      });
+      console.log(transactionHash);
+      if (transactionHash) {
+        console.log("Election Added to Blockchain");
+        getElectionList();
+        return true;
+      }
+    } catch (error) {
+      console.log("Election Failed to Register on Blockchain");
+      console.error(error);
+    }
+  }
+
+  const getElectionList = async () => {
+    const data = await readContract({
+      contract: elecContract,
+      method: resolveMethod("getElectionDetails"),
+      params: []
+    })
+    setElectionList(data);
+   
+  }
+
   return (
     <AdminContext.Provider
       value={{
@@ -184,6 +221,11 @@ const AdminState = (props) => {
         handleApprove,
         addCandidate,
         uploadFile,
+        addElection,
+        getElectionList,
+        setElectionList,
+        electionList
+        
       }}
     >
       {props.children}

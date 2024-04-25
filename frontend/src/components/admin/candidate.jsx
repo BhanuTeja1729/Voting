@@ -40,6 +40,7 @@ const candidate = () => {
   const [candidateLastName, setCandidateLastName] = useState("");
   const [wardNo, setWardNo] = useState("");
   const [party, setParty] = useState("");
+  const [election_id, setElectionId] = useState("");
   const [img, setImg] = useState(null);
 
   const handleRegister = async (e) => {
@@ -88,15 +89,21 @@ const candidate = () => {
     } catch (error) {
       console.log(error);
       console.log(
-        "Candidate Not Registered either blockchain error or cloudinary"
+        "Candidate Not Registered, either blockchain error or cloudinary"
       );
     }
   };
 
-  const options = [
+  const partyOptions = [
     { value: "Party 1", label: "Party 1" },
     { value: "Party 2", label: "Party 2" },
     { value: "Party 3", label: "Party 3" },
+  ];
+
+  const electionIdOptions = [
+    { value: "101", label: "101" },
+    { value: "102", label: "102" },
+    { value: "103", label: "103" },
   ];
   return (
     <>
@@ -151,15 +158,15 @@ const candidate = () => {
                     required
                     sx={{ mb: 2 }}
                   />
-                  <Box sx={{ mb: 8 }}>
+                  <Box sx={{ mb: 8, width:"100%" }}>
                     <FormControl fullWidth>
                       <InputLabel>Election Id</InputLabel>
                       <Select
-                        value={party}
-                        label="Party"
-                        onChange={(e) => setParty(e.target.value)}
+                        value={election_id}
+                        label="Election Id"
+                        onChange={(e) => setElectionId(e.target.value)}
                       >
-                        {options.map((option) => (
+                        {electionIdOptions.map((option) => (
                           <MenuItem key={option.value} value={option.value}>
                             {option.label}
                           </MenuItem>
@@ -177,7 +184,7 @@ const candidate = () => {
                       label="Party"
                       onChange={(e) => setParty(e.target.value)}
                     >
-                      {options.map((option) => (
+                      {partyOptions.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
                           {option.label}
                         </MenuItem>
