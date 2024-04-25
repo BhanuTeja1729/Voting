@@ -79,23 +79,36 @@ const AdminState = (props) => {
     }
   };
 
-  const getCandidateList = async () => {
+  const getCandidateList = async (props) => {
     // console.log("test");
+    // try {
+    //   const res = await fetch(`${host}/candidatelist`, {
+    //     method: "GET",
+    //     credentials: "include",
+    //     headers: {
+    //       Accept: "application/json",
+    //       "Content-Type": "application/json",
+    //     },
+    //   });
+    //   const data = await res.json();
+    //   console.log(data);
+    //   setCandidateList(data);
+    // } catch (error) {
+    //   console.error(error.message);
+    // }
+
+
     try {
-      const res = await fetch(`${host}/candidatelist`, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await res.json();
-      // console.log(data);
-      setCandidateList(data);
+      const data = await readContract({ 
+        contract, 
+        method: resolveMethod("getCandidatesByElectionId"), 
+        params: [_electionId] 
+      })
     } catch (error) {
-      console.error(error.message);
+      
     }
+
+
   };
 
   const handleApprove = async (props) => {
@@ -222,6 +235,8 @@ const AdminState = (props) => {
     }
   }
 
+  
+
   return (
     <AdminContext.Provider
       value={{
@@ -238,7 +253,6 @@ const AdminState = (props) => {
         switchElectionStatus,
         setElectionList,
         electionList
-
       }}
     >
       {props.children}

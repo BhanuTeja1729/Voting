@@ -7,7 +7,7 @@ import AdminContext from '../../contexts/admin/adminContext';
 
 //contract
 import { useActiveAccount, useReadContract } from 'thirdweb/react';
-import { resolveMethod,readContract } from 'thirdweb';
+import { resolveMethod, readContract } from 'thirdweb';
 import elecContract from '../../contracts/election';
 
 
@@ -15,16 +15,16 @@ const election = () => {
 
   const account = useActiveAccount();
   const adminContext = useContext(AdminContext);
-  const { addElection, setElectionList, electionList} = adminContext;
+  const { addElection, setElectionList, electionList } = adminContext;
   const [electionName, setElectionName] = useState('')
   const [election_id, setElectionId] = useState('')
 
   //Use Effect to update electionList when it changes
-  useEffect(() => { 
+  useEffect(() => {
     console.log(electionList)
-   }, [electionList])
+  }, [electionList])
 
-   //Use Effect to get electionList on page load
+  //Use Effect to get electionList on page load
   useEffect(() => { getElectionList() }, [])
 
   const getElectionList = async () => {
@@ -54,22 +54,22 @@ const election = () => {
 
   let structuredData = [];
 
-//Iterate over the length of the arrays (assuming they all have the same length)
- if (electionList[0] !== undefined) {
- 
-for (let i = 0; i < electionList[0].length; i++) {
-    // Create an object to hold the values from each array
-    let obj = {
+  //Iterate over the length of the arrays (assuming they all have the same length)
+  if (electionList[0] !== undefined) {
+
+    for (let i = 0; i < electionList[0].length; i++) {
+      // Create an object to hold the values from each array
+      let obj = {
         id: electionList[0][i],
         name: electionList[1][i],
         status: electionList[2][i]
-    };
-    // Push the object into the structured data array
-    structuredData.push(obj);
-}
- }
-// Now you have an array of objects where each object contains all three values
-console.log(structuredData);
+      };
+      // Push the object into the structured data array
+      structuredData.push(obj);
+    }
+  }
+  // Now you have an array of objects where each object contains all three values
+  console.log(structuredData);
 
 
   return (
@@ -120,20 +120,17 @@ console.log(structuredData);
                 <Button variant='contained' color='success' sx={{ mr: 1.5 }} onClick={handleCreate} disabled={electionName == '' || election_id == ""}>Create Election</Button>
               </Box>
             </AccordionDetails>
-            {/* <AccordionActions>
-                       <Button variant='contained' color='success' sx={{ mr: 1.5, mb: 1.5 }}>Register</Button>
-                   </AccordionActions> */}
           </Accordion>
         )
 
         }
       </div>
-      
-      <Box sx={{mt:5, maxWidth:"100%"}}>
+
+      <Box sx={{ mt: 5, maxWidth: "100%" }}>
         <div className='text-3xl font-medium'>
           Election List
         </div>
-        <ElectionCard data={structuredData} getElectionList={getElectionList}/>
+        <ElectionCard data={structuredData} getElectionList={getElectionList} />
       </Box>
 
     </>

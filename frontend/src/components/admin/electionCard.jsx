@@ -47,7 +47,7 @@ const electionCard = ({data, getElectionList}) => {
                             <CardContent sx={{ marginBottom: "1rem" }}>
                                 <Stack spacing={2} direction="column">
                                     <div className="text-xl font-medium">{item.name}</div>
-                                    <div className="text-xl font-medium">Status : {item.status.toString()}</div>
+                                    <div className="text-xl font-medium">Status : {item.status ? "Active" : "Inactive"}</div>
                                 </Stack>
                                 <Button
                                     variant="contained"

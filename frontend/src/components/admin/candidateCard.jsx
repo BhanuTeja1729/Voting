@@ -18,12 +18,12 @@ const candidateCard = (props) => {
             justifyContent="space-between"
           >
             <Box sx={{ maxHeight: 100, maxWidth: 60, p: 0.5 }}>
-              <img src={candidate.imgUrl} alt="Candidate Image" />
+              <img src={candidate.cimg} alt="Candidate Image" />
             </Box>
             <Divider orientation="vertical" flexItem />
             <Typography sx={{ display: "flex", alignItems: "center" }}>
               Name:{" "}
-              {candidate.candidateFirstName + " " + candidate.candidateLastName}
+              {candidate.name}
             </Typography>
             <Divider orientation="vertical" flexItem />
             <Typography sx={{ display: "flex", alignItems: "center" }}>
