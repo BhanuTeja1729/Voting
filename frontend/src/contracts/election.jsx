@@ -6,7 +6,7 @@ import chain from "../thirdweb/chain.js";
 const elecContract = getContract({
   client,
   chain: chain,
-  address: "0x1C2721731C7CAEc8497b9999697127B742dd0523",
+  address: "0xfe3F893BAD036e4F18dF9D9E0617eE29b14c6FE2",
 });
 
 export default elecContract;

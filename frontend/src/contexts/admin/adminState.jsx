@@ -198,7 +198,28 @@ const AdminState = (props) => {
     }
   }
 
-  
+  const switchElectionStatus = async (props) => {
+    const { _id } = props;
+    try {
+      const transaction = await prepareContractCall({
+        contract: elecContract,
+        method: resolveMethod("switchElectionStatus"),
+        params: [_id]
+      });
+      const { transactionHash } = await sendTransaction({
+        transaction,
+        account
+      })
+      console.log(transactionHash);
+      if (transactionHash) {
+        console.log("Election Status Updated on Blockchain");
+        return true;
+      }
+    } catch (error) {
+      console.log("Failed to Updaate Election Status on Blockchain");
+      console.error(error);
+    }
+  }
 
   return (
     <AdminContext.Provider
@@ -213,10 +234,10 @@ const AdminState = (props) => {
         addCandidate,
         uploadFile,
         addElection,
-        
+        switchElectionStatus,
         setElectionList,
         electionList
-        
+
       }}
     >
       {props.children}

@@ -133,6 +133,7 @@ console.log(structuredData);
         <div className='text-3xl font-medium'>
           Election List
         </div>
+        <ElectionCard data={structuredData} />
       </Box>
 
     </>
