@@ -9,6 +9,7 @@ import AdminContext from '../../contexts/admin/adminContext';
 import { useActiveAccount, useReadContract } from 'thirdweb/react';
 import { resolveMethod, readContract } from 'thirdweb';
 import elecContract from '../../contracts/election';
+import { toast } from 'react-toastify';
 
 
 const election = () => {
@@ -44,9 +45,9 @@ const election = () => {
     const props = { _election_id, _election_name }
     const added = await addElection(props)
     if (added) {
-      console.log('Election Created Successfully')
+      toast.success('Election Created Successfully')
       getElectionList()
-      // console.log(electionList)
+      console.log(electionList)
     }
 
   }

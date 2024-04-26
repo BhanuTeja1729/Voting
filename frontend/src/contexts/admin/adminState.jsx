@@ -12,6 +12,7 @@ import { useActiveAccount, useReadContract } from "thirdweb/react";
 
 
 import { create } from "../../api/admin";
+import { toast } from "react-toastify";
 
 const AdminState = (props) => {
   const account = useActiveAccount();
@@ -179,11 +180,11 @@ const AdminState = (props) => {
       });
       console.log(transactionHash);
       if (transactionHash) {
-        console.log("Candidate Added to Blockchain");
+        toast.success("Candidate Added to Blockchain");
         return true;
       }
     } catch (error) {
-      console.log("Candidate Failed to Register on Blockchain");
+      toast.error("Candidate Failed to Register on Blockchain");
       console.error(error);
     }
   };
@@ -194,7 +195,7 @@ const AdminState = (props) => {
       const transaction = await prepareContractCall({
         contract: elecContract,
         method: resolveMethod("addElection"),
-        params: [_election_id, _election_name],
+        params: [ _election_name,_election_id,],
       });
       const { transactionHash } = await sendTransaction({
         transaction,

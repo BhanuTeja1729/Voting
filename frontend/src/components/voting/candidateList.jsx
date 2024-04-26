@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, Stack, Card, CardContent, CardMedia, Button } from "@mui/material";
 import CountdownTimer from "./countdownTimer";
 import FaceRecognitionComponent from "./faceRecognition";
-
+import { toast } from "react-toastify";
 import UserContext from "../../contexts/user/userContext";
 
 
@@ -22,7 +22,7 @@ const candidateList = () => {
   } = userContext;
 
   const handleTimerEnd = () => {
-    alert("Timer Ended!");
+    toast.error("Timer Ended!");
     navigate("/user/guidelines");
   };
 
@@ -33,7 +33,7 @@ const candidateList = () => {
     if (res) {
       let res2 = await updateVoterStatus();
       if (res2) {
-        alert("Vote Casted");
+        toast.success("Vote Casted");
         navigate("/user/guidelines")
       }
     }

@@ -95,7 +95,7 @@ const userElections = () => {
   return (
     <>
       <div className="my-6 font-semibold text-3xl">Elections</div>
-      {election && user.hasVoted == false ? (
+      {/* {election && user.hasVoted == false ? ( */}
         <div>
           <Box
             sx={{
@@ -166,7 +166,7 @@ const userElections = () => {
             <h1>No Elections Currently</h1>
           )}
         </Box>
-      )}
+      {/* )} */}
     </>
   );
 };

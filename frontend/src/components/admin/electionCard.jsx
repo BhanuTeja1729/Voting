@@ -1,6 +1,7 @@
 import React,{useContext} from 'react';
 import { Box, Stack, Card, CardContent, Button } from '@mui/material';
 import AdminContext from '../../contexts/admin/adminContext';
+import { toast } from 'react-toastify';
 
 
 const electionCard = ({data, getElectionList}) => {
@@ -14,10 +15,10 @@ const electionCard = ({data, getElectionList}) => {
         const changed = await switchElectionStatus(props)
         if(changed){
             getElectionList();
-            console.log("Election status Updated")
+            toast.success("Election Status Updated")
         }
         else{
-            console.log("Election status not Updated")
+            toast.error("Election Status not Updated")
         }
     }
 

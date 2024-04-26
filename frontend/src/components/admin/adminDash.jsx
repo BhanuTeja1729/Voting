@@ -152,58 +152,7 @@ const adminDash = () => {
                   </div>
                   <Divider />
                   <br />
-                  {/* <Stack
-                    spacing={4}
-                    sx={{ bgcolor: "white" }}
-                    direction="row"
-                    useFlexGap
-                    flexWrap="wrap"
-                  >
-                    <Box
-                      sx={{
-                        borderRadius: 1,
-                        padding: 3,
-                        fontSize: 35,
-                        fontWeight: 500,
-                        bgcolor: "grey",
-                      }}
-                    >
-                      {applicants}
-                    </Box>
-                    <Box
-                      sx={{
-                        borderRadius: 1,
-                        padding: 3,
-                        fontSize: 35,
-                        fontWeight: 500,
-                        bgcolor: "grey",
-                      }}
-                    >
-                      {accepted}
-                    </Box>
-                    <Box
-                      sx={{
-                        borderRadius: 1,
-                        padding: 3,
-                        fontSize: 35,
-                        fontWeight: 500,
-                        bgcolor: "grey",
-                      }}
-                    >
-                      {pending}
-                    </Box>
-                  </Stack>
-                  <Stack
-                    spacing={6}
-                    direction={"row"}
-                    padding={1}
-                    useFlexGap
-                    flexWrap="wrap"
-                  >
-                    <Typography color="initial">Applicants</Typography>
-                    <Typography color="initial">Accepted</Typography>
-                    <Typography color="initial">Pending</Typography>
-                  </Stack> */}
+                  
                   <Stack spacing={3} direction={"column"} sx={{height:140}}>
                       <Box component="section" sx={{textAlign:"center", fontSize:21, fontWeight:"medium", width:"100%"}}>Current Election : {eName}</Box>
                       <Box component="section" sx={{textAlign:"center", fontSize:21, fontWeight:"normal", width:"100%"}}>Election Winner : {eWinner}</Box>

@@ -18,6 +18,7 @@ import {
 //Icons
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { toast } from "react-toastify";
 
 const adminLogin = () => {
   const navigate = useNavigate();
@@ -32,14 +33,14 @@ const adminLogin = () => {
     try {
         const res = await login(email, password);
         if (res.error) {
-            console.error(res.error);
+            toast.error(res.error);
         } else {
-            console.log("successful Login");
+            toast.success(" Login Successful ");
             localStorage.setItem('jwt', res.token); // Store the JWT token in local storage
             navigate("/admin/dashboard");
         }
     } catch (error) {
-        console.error(error);
+        toast.error(error);
     }
 };
 

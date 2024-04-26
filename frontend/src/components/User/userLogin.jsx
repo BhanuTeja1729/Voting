@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AALogin } from "../wallet/wallet";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../../contexts/user/userContext";
+import { toast } from "react-toastify";
 import {
   useActiveWalletConnectionStatus,
   useActiveAccount,
@@ -26,28 +27,6 @@ const userLogin = () => {
   const [proceed, setProceed] = useState(false);
   const [msg, setMsg] = useState(false);
 
-  // const handleProceed = async () => {
-
-  //   try {
-  //     const data = await readContract({
-  //       contract: voterContract,
-  //       method: resolveMethod("checkVoter"),
-  //       params: [voterId, email]
-  //     })
-  //     if (data) {
-  //       returnVoter(voterId)
-  //       await console.log(user)
-  //       setProceed(!proceed)
-  //     }
-  //     else {
-  //       console.log("Login With Proper Credentials")
-  //     }
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-
-  // };
-
   const handleProceed = async () => {
     try {
         const data = await readContract({
@@ -60,11 +39,12 @@ const userLogin = () => {
             await returnVoter(voterId); // Wait for returnVoter to finish
             // console.log(user); // This will log the updated user state
             setProceed(!proceed);
+            toast.success("Connect to Wallet")
         } else {
-            console.log("Login With Proper Credentials");
+            toast.error("Login With Proper Credentials");
         }
     } catch (error) {
-        console.log(error);
+        toast.error(error);
     }
 };
 

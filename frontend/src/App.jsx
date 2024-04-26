@@ -24,11 +24,17 @@ import Voting from "./components/Voting";
 import CandList from "./components/voting/candidateList";
 import AdminState from "./contexts/admin/adminState";
 import UserState from "./contexts/user/userState";
+
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 const App = () => {
   return (
     <>
+
       <AdminState>
         <UserState>
+          <ToastContainer/>
           <Header />
           <Router>
             <Routes>

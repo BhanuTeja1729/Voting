@@ -16,6 +16,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { toast } from "react-toastify";
 
 import { create } from "../../api/admin";
 import CandidateCard from "./candidateCard";
@@ -134,7 +135,7 @@ const candidate = () => {
       // }
     } catch (error) {
       console.log(error);
-      console.log(
+      toast.error(
         "Candidate Not Registered, either blockchain error or cloudinary"
       );
     }

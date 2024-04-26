@@ -13,6 +13,7 @@ import {
   prepareContractCall,
 } from "thirdweb";
 import { useActiveAccount } from "thirdweb/react";
+import { toast } from "react-toastify";
 
 const UserState = (props) => {
   const [status, setStatus] = useState(false);
@@ -37,7 +38,7 @@ const UserState = (props) => {
         method: resolveMethod("returnVoter"),
         params: [_voterId],
       });
-      console.log(data);
+      // console.log(data);
       if (data) {
         setUser({
           voterId: data.voterId,
@@ -47,9 +48,10 @@ const UserState = (props) => {
           imgUrl: data.imgUrl,
           hasVoted: data.castedVote,
         });
+
       }
     } catch (error) {
-      console.log(error);
+      toast.log(error);
     }
   };
 
@@ -80,7 +82,7 @@ const UserState = (props) => {
       const { secure_url } = res.data;
       return secure_url;
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   };
 
@@ -109,7 +111,7 @@ const UserState = (props) => {
       }
     } catch (error) {
       console.log(error);
-      console.log("Failed to get candidate details");
+      toast.error("Failed to get candidate details");
     }
   };
 
@@ -127,11 +129,11 @@ const UserState = (props) => {
         account,
       });
       if (transactionHash) {
-        console.log("Vote updated for candidate " + transactionHash);
+        toast.success("Vote Updated for Candidate " +"Transaction Hash"+ transactionHash);
         return true;
       }
     } catch (error) {
-      console.log("Failed to update vote count");
+      toast.error("Failed to update vote count");
       console.log(error);
     }
   };
@@ -148,12 +150,12 @@ const UserState = (props) => {
         account,
       });
       if (transactionHash) {
-        console.log("Voter status updated " + transactionHash);
+        toast.success("Vote Casted , Transaction Hash: " + transactionHash);
         user.hasVoted = true;
         return true;
       }
     } catch (error) {
-      console.log("Failed to update voter status");
+      toast.error("Failed to Cast Vote");
       console.log(error);
     }
   };

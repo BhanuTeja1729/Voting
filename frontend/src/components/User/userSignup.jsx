@@ -8,6 +8,7 @@ import { Button, TextField, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import UserContext from "../../contexts/user/userContext";
+import {toast} from "react-toastify"
 
 //api functions
 import { create } from "../../api/voter";
@@ -54,14 +55,14 @@ const userSignup = () => {
           imgUrl,
         });
         if (res.error) {
-          console.error(res.error);
+          toast.error(res.error);
         } else {
-          console.log(res.message);
+          toast.success(res.message);
           // Redirect to login after successful registration
           navigate("/user/login");
         }
       } catch (err) {
-        console.error(err);
+        toast.error(err);
       }
     } catch (error) {
       alert(error);

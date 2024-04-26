@@ -21,6 +21,7 @@ import {
   useActiveAccount,
   // useSendTransaction,
 } from "thirdweb/react";
+import { toast } from "react-toastify";
 
 const voterRegCard = (props) => {
   const adminContext = useContext(AdminContext);
@@ -46,8 +47,9 @@ const voterRegCard = (props) => {
     if (voter && voter._id) {
       deleteVoter(voter._id);
       getVoterList();
+      toast.success("Voter Deleted Successfully")
     } else {
-      console.error("Voter or voter._id is undefined.");
+      toast.error("Voter Deletion.");
     }
   };
   const handApprov = async () => {
@@ -55,7 +57,7 @@ const voterRegCard = (props) => {
     let val = await handleApprove(props);
     getVoterList();
     if (val) {
-      console.log("Approved");
+      toast.success("Voter Approved");
     }
   };
   return (
