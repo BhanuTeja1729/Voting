@@ -5,31 +5,39 @@ import axios from "axios";
 
 //contracts
 import voterContract from "../../contracts/voter";
-import { readContract, resolveMethod } from "thirdweb";
-
+import candContract from "../../contracts/candidate";
+import {
+  readContract,
+  resolveMethod,
+  sendTransaction,
+  prepareContractCall,
+} from "thirdweb";
+import { useActiveAccount } from "thirdweb/react";
 
 const UserState = (props) => {
   const [status, setStatus] = useState(false);
+  const [electionChoice, setElectionChoice] = useState("");
+  const [candidateList, setCandidateList] = useState([]);
+  const account = useActiveAccount();
   const [user, setUser] = useState({
     voterId: "",
     name: "",
     aadhar: "",
     email: "",
     imgUrl: "",
-    hasVoted:false,
+    hasVoted: false,
   });
   const [faceRecognized, setFaceRecognized] = useState(false);
   const [message, setMessage] = useState("");
 
   const returnVoter = async (_voterId) => {
-
     try {
       const data = await readContract({
         contract: voterContract,
         method: resolveMethod("returnVoter"),
-        params: [_voterId]
-      })
-      console.log(data)
+        params: [_voterId],
+      });
+      console.log(data);
       if (data) {
         setUser({
           voterId: data.voterId,
@@ -41,20 +49,18 @@ const UserState = (props) => {
         });
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const setStatusHandler = (stat) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    if (stat === 'connected') {
+    if (stat === "connected") {
       setStatus(true);
-
-    }
-    else {
+    } else {
       setStatus(false);
     }
-  }
+  };
 
   const uploadFile = async (type, fName, lName, img) => {
     const data = new FormData();
@@ -76,12 +82,101 @@ const UserState = (props) => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
+
+  const getCandidateDetails = async () => {
+    try {
+      const data = await readContract({
+        contract: candContract,
+        method: resolveMethod("getCandidatesByElectionId"),
+        params: [electionChoice],
+      });
+      let candidates = [];
+      if (data) {
+        console.log(data);
+        for (let i = 0; i < data[0].length; i++) {
+          let obj = {
+            name: data[0][i],
+            wardNo: data[1][i],
+            partyNo: data[2][i],
+            imageUrl: data[3][i],
+          };
+          candidates.push(obj);
+        }
+        console.log(candidates);
+        setCandidateList(candidates);
+        return true;
+      }
+    } catch (error) {
+      console.log(error);
+      console.log("Failed to get candidate details");
+    }
+  };
+
+  const updateVoter = async (props) => {
+    const { candidate } = props;
+     var name= candidate.name;
+    try {
+      const transaction = await prepareContractCall({
+        contract: candContract,
+        method: resolveMethod("updateVoteCount"),
+        params: [name],
+      });
+      const { transactionHash } = await sendTransaction({
+        transaction,
+        account,
+      });
+      if (transactionHash) {
+        console.log("Vote updated for candidate " + transactionHash);
+        return true;
+      }
+    } catch (error) {
+      console.log("Failed to update vote count");
+      console.log(error);
+    }
+  };
+
+  const updateVoterStatus = async () => {
+    try {
+      const transaction = await prepareContractCall({
+        contract: voterContract,
+        method: resolveMethod("vote"),
+        params: [user.voterId],
+      });
+      const { transactionHash } = await sendTransaction({
+        transaction,
+        account,
+      });
+      if (transactionHash) {
+        console.log("Voter status updated " + transactionHash);
+        user.hasVoted = true;
+        return true;
+      }
+    } catch (error) {
+      console.log("Failed to update voter status");
+      console.log(error);
+    }
+  };
 
   return (
     <UserContext.Provider
       value={{
-        status, setStatusHandler, uploadFile, returnVoter, user, faceRecognized, setFaceRecognized, message, setMessage,setUser,
+        status,
+        setStatusHandler,
+        uploadFile,
+        returnVoter,
+        user,
+        faceRecognized,
+        setFaceRecognized,
+        message,
+        setMessage,
+        setUser,
+        electionChoice,
+        setElectionChoice,
+        getCandidateDetails,
+        candidateList,
+        updateVoter,
+        updateVoterStatus,
       }}
     >
       {props.children}

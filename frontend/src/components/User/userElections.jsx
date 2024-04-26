@@ -21,7 +21,13 @@ const userElections = () => {
   let navigate = useNavigate();
 
   const stat = useActiveWalletConnectionStatus();
-  const { setStatusHandler,user } = userContext;
+  const {
+    setStatusHandler,
+    user,
+    setElectionChoice,
+    getCandidateDetails,
+    candidateList,
+  } = userContext;
 
   const getElectionList = async () => {
     try {
@@ -40,6 +46,7 @@ const userElections = () => {
 
 
   }
+  var elections=[];
   useEffect(() => {
     if (election !== undefined) {
       for (let i = 0; i < election[0].length; i++) {
@@ -49,23 +56,26 @@ const userElections = () => {
             name: election[1][i],
             status: election[2][i]
           };
-          setActiveElection(obj);
-
-          break;
-
+          elections.push(obj);
         }
       }
+      setActiveElection(elections);
+      console.log(activeElection);
     }
+
   }, [election]);
 
   console.log(activeElection)
   console.log(user)
 
 
-  const handleVote = (e) => {
-    e.preventDefault();
-
+  const handleVote = async (elec) => {
+    setElectionChoice(elec.id);
+    let cand= await getCandidateDetails();
+    console.log(candidateList);
+    if(cand){
     navigate("/voting/candidates");
+    }
   };
 
   useEffect(() => {
@@ -101,41 +111,44 @@ const userElections = () => {
               backgroundRepeat: "no-repeat",
             }}
           >
-            <Box
-              sx={{
-                boxShadow: 3,
-                width: "25%",
-                height: 500,
-                padding: 3,
-                my: 3,
-                backgroundColor: "rgba(255, 255, 255, 0.4)",
-                borderRadius: 4,
-              }}
-            >
-              <div className=" text-center text-3xl font-semibold mt-4">
-                {activeElection.name}
-              </div>
-              <img
-                src="https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067_640.png"
-                alt="img"
-                width={"100%"}
-                height={"25%"}
-                className="my-4"
-              />
-              <div className="text-xl font-medium p-5">
-                <div>Id : {activeElection.id}</div>
-                {/* <div>Date</div>
-                <div>Time</div> */}
-              </div>
-              <Button
-                variant="contained"
-                color="success"
-                sx={{ width: "75%", mx: 4 }}
-                onClick={handleVote}
+            {activeElection.map((elec) => (
+              
+              <Box key={elec.id}
+                sx={{
+                  boxShadow: 3,
+                  width: "25%",
+                  height: 500,
+                  padding: 3,
+                  my: 3,
+                  backgroundColor: "rgba(255, 255, 255, 0.4)",
+                  borderRadius: 4,
+                }}
               >
-                <div className="text-white-600 text-lg ">Vote</div>
-              </Button>
-            </Box>
+                <div className=" text-center text-3xl font-semibold mt-4">
+                  {elec.name}
+                </div>
+                <img
+                  src="https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067_640.png"
+                  alt="img"
+                  width={"100%"}
+                  height={"25%"}
+                  className="my-4"
+                />
+                <div className="text-xl font-medium p-5">
+                  <div>Id : {elec.id}</div>
+                  {/* <div>Date</div>
+                <div>Time</div> */}
+                </div>
+                <Button
+                  variant="contained"
+                  color="success"
+                  sx={{ width: "75%", mx: 4 }}
+                  onClick={() => handleVote(elec)}
+                >
+                  <div className="text-white-600 text-lg ">Vote</div>
+                </Button>
+              </Box>
+            ))}
           </Box>
         </div>
       ) : (
@@ -147,7 +160,11 @@ const userElections = () => {
             my: 3,
           }}
         >
-          {user.hasVoted ? <h1>You have already casted your vote,await for results</h1> : <h1>No Elections Currently</h1>}
+          {user.hasVoted ? (
+            <h1>You have already casted your vote,await for results</h1>
+          ) : (
+            <h1>No Elections Currently</h1>
+          )}
         </Box>
       )}
     </>

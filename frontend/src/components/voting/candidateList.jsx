@@ -11,62 +11,33 @@ import UserContext from "../../contexts/user/userContext";
 const candidateList = () => {
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
-  const { user, message } = userContext;
+  const {
+    user,
+    message,
+    candidateList,
+    updateVoter,
+    updateVoterStatus,
+    getCandidateDetails,
+  } = userContext;
 
   const handleTimerEnd = () => {
     alert("Timer Ended!");
-  };
-
-
-  const handleVote = () => {
-    alert("Vote Casted");
     navigate("/user/guidelines");
   };
-  const cardData = [
-    {
-      id: 1,
-      img: "https://pbs.twimg.com/profile_images/1700051019525488640/VRqy0bTE_400x400.jpg",
-      name: "Narendra Modi",
-      party: "Bharatiya Janatha Party",
-    },
-    {
-      id: 2,
-      img: "https://pbs.twimg.com/profile_images/1700051019525488640/VRqy0bTE_400x400.jpg",
-      name: "Narendra Modi",
-      party: "Bharatiya Janatha Party",
-    },
-    {
-      id: 3,
-      img: "https://pbs.twimg.com/profile_images/1700051019525488640/VRqy0bTE_400x400.jpg",
-      name: "Narendra Modi",
-      party: "Bharatiya Janatha Party",
-    },
-    {
-      id: 4,
-      img: "https://pbs.twimg.com/profile_images/1700051019525488640/VRqy0bTE_400x400.jpg",
-      name: "Narendra Modi",
-      party: "Bharatiya Janatha Party",
-    },
-    {
-      id: 5,
-      img: "https://pbs.twimg.com/profile_images/1700051019525488640/VRqy0bTE_400x400.jpg",
-      name: "Narendra Modi",
-      party: "Bharatiya Janatha Party",
-    },
-    {
-      id: 6,
-      img: "https://pbs.twimg.com/profile_images/1700051019525488640/VRqy0bTE_400x400.jpg",
-      name: "Narendra Modi",
-      party: "Bharatiya Janatha Party",
-    },
-    {
-      id: 7,
-      img: "https://pbs.twimg.com/profile_images/1700051019525488640/VRqy0bTE_400x400.jpg",
-      name: "Narendra Modi",
-      party: "Bharatiya Janatha Party",
-    },
-  ];
 
+
+  const handleVote = async (candidate) => {
+    const props={candidate};
+    let res=await updateVoter(props);
+    if(res){
+      let res2 = await updateVoterStatus();
+      if(res2){
+       alert("Vote Casted");
+       navigate("/user/guidelines")
+      }
+    }
+  };
+  
   return (
     <>
       <Box sx={{ maxWidth: "100%", p: 3 }}>
@@ -96,7 +67,7 @@ const candidateList = () => {
               p: 1,
             }}
           >
-            <FaceRecognitionComponent imgUrl={user.imgUrl}/>
+            <FaceRecognitionComponent imgUrl={user.imgUrl} />
           </Box>
         </Stack>
 
@@ -117,24 +88,27 @@ const candidateList = () => {
             useFlexGap
             flexWrap="wrap"
           >
-            {cardData.map((card) => (
-              <Card key={card.id} sx={{ width: "15%" }}>
+            
+            {candidateList.map((candidate) => (
+              <Card key={candidate.name} sx={{ width: "15%" }}>
                 <CardContent sx={{ marginBottom: "1rem" }}>
                   <Stack spacing={2} direction="column">
                     <CardMedia
-                      title={card.name}
-                      image={card.img}
+                      title={candidate.name}
+                      image={candidate.imageUrl}
                       component="img"
                       sx={{ maxHeight: 200, maxWidth: 230 }}
                     />
-                    <div className="text-xl font-medium">{card.name}</div>
-                    <div className="text-xl font-medium">{card.party}</div>
+                    <div className="text-xl font-medium">{candidate.name}</div>
+                    <div className="text-xl font-medium">
+                      {candidate.partyNo}
+                    </div>
                     <div>
                       <Button
                         variant="contained"
                         color="success"
                         sx={{ width: "100%" }}
-                        onClick={handleVote}
+                        onClick={() => handleVote(candidate)}
                       >
                         Vote
                       </Button>
