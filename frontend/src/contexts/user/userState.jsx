@@ -104,7 +104,7 @@ const UserState = (props) => {
           candidates.push(obj);
         }
         console.log(candidates);
-        setCandidateList(candidates);
+        await setCandidateList(candidates);
         return true;
       }
     } catch (error) {

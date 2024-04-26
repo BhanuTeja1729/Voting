@@ -5,12 +5,13 @@ import * as faceapi from 'face-api.js';
 
 import UserContext from '../../contexts/user/userContext';
 
-const FaceRecognitionComponent = ({imgUrl}) => {
+const FaceRecognitionComponent = ({ imgUrl }) => {
 
     const userContext = useContext(UserContext);
-    const { setFaceRecognized, setMessage, user} = userContext
+    const { setFaceRecognized, setMessage, user, faceRecognized } = userContext
 
     const videoRef = useRef(null);
+    let videoStream
 
     useEffect(() => {
         const loadModelsAndLabeledImages = async () => {
@@ -23,14 +24,13 @@ const FaceRecognitionComponent = ({imgUrl}) => {
             const labels = [user.name]; // Adjust labels as needed
             console.log(labels);
             console.log(imgUrl);
-            
-            
+
+
             const labeledDescriptors = await Promise.all(
                 labels.map(async (label) => {
                     const descriptions = [];
                     for (let i = 1; i <= 2; i++) {
                         const img = await faceapi.fetchImage(imgUrl);
-                        console.log(img);
                         const detections = await faceapi.detectSingleFace(img, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor();
                         descriptions.push(detections.descriptor);
                     }
@@ -45,6 +45,7 @@ const FaceRecognitionComponent = ({imgUrl}) => {
                     try {
                         const stream = await navigator.mediaDevices.getUserMedia({ video: {} });
                         video.srcObject = stream;
+                        videoStream = stream
                     } catch (err) {
                         console.error(err);
                     }
@@ -65,11 +66,12 @@ const FaceRecognitionComponent = ({imgUrl}) => {
                             });
                             const recognizedFace = results.find((result) => result.distance); // Adjust the threshold as needed
                             if (recognizedFace) {
-                                setFaceRecognized(true);
+                                setFaceRecognized(!faceRecognized);
                                 setMessage(`Hello, ${recognizedFace.label}!`);
-                                
+
                             } else {
                                 setMessage('Unknown person');
+                                setFaceRecognized(!faceRecognized);
                             }
                         }
                     }, 5000);
@@ -80,6 +82,12 @@ const FaceRecognitionComponent = ({imgUrl}) => {
         };
 
         loadModelsAndLabeledImages();
+
+        return () => {
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+            }
+        }
     }, [setMessage]);
 
     return (
@@ -90,3 +98,5 @@ const FaceRecognitionComponent = ({imgUrl}) => {
 };
 
 export default FaceRecognitionComponent;
+
+

@@ -18,6 +18,7 @@ const candidateList = () => {
     updateVoter,
     updateVoterStatus,
     getCandidateDetails,
+    faceRecognized
   } = userContext;
 
   const handleTimerEnd = () => {
@@ -27,17 +28,17 @@ const candidateList = () => {
 
 
   const handleVote = async (candidate) => {
-    const props={candidate};
-    let res=await updateVoter(props);
-    if(res){
+    const props = { candidate };
+    let res = await updateVoter(props);
+    if (res) {
       let res2 = await updateVoterStatus();
-      if(res2){
-       alert("Vote Casted");
-       navigate("/user/guidelines")
+      if (res2) {
+        alert("Vote Casted");
+        navigate("/user/guidelines")
       }
     }
   };
-  
+
   return (
     <>
       <Box sx={{ maxWidth: "100%", p: 3 }}>
@@ -88,7 +89,7 @@ const candidateList = () => {
             useFlexGap
             flexWrap="wrap"
           >
-            
+
             {candidateList.map((candidate) => (
               <Card key={candidate.name} sx={{ width: "15%" }}>
                 <CardContent sx={{ marginBottom: "1rem" }}>

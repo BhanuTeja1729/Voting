@@ -70,7 +70,7 @@ const userElections = () => {
 
 
   const handleVote = async (elec) => {
-    setElectionChoice(elec.id);
+    await setElectionChoice(elec.id);
     let cand= await getCandidateDetails();
     console.log(candidateList);
     if(cand){
