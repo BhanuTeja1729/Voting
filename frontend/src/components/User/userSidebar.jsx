@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useContext} from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useDisconnect, useActiveAccount, useActiveWallet } from "thirdweb/react";
 import { AALogin } from "../wallet/wallet";
@@ -20,6 +20,8 @@ import HowToVoteIcon from "@mui/icons-material/HowToVote";
 import PublicOutlinedIcon from "@mui/icons-material/PublicOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 
+import UserContext from "../../contexts/user/userContext";
+
 const drawerWidth = 240;
 
 const userSidebar = () => {
@@ -27,7 +29,18 @@ const userSidebar = () => {
   const wallet = useActiveWallet();
   const icons = [ListAltIcon, HowToVoteIcon, PublicOutlinedIcon];
 
+   let userContext = useContext(UserContext);
+  const { setUser } = userContext;
+
   const handleLogout = () => {
+    setUser({
+      voterId: "",
+      name: "",
+      aadhar: "",
+      email: "",
+      imgUrl: "",
+      hasVoted: false,
+    });
     disconnect(wallet)
   }
 

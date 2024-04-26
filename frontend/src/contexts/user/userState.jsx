@@ -16,6 +16,7 @@ const UserState = (props) => {
     aadhar: "",
     email: "",
     imgUrl: "",
+    hasVoted:false,
   });
   const [faceRecognized, setFaceRecognized] = useState(false);
   const [message, setMessage] = useState("");
@@ -28,6 +29,7 @@ const UserState = (props) => {
         method: resolveMethod("returnVoter"),
         params: [_voterId]
       })
+      console.log(data)
       if (data) {
         setUser({
           voterId: data.voterId,
@@ -35,16 +37,13 @@ const UserState = (props) => {
           aadhar: data.aadharNo,
           email: data.email,
           imgUrl: data.imgUrl,
+          hasVoted: data.castedVote,
         });
       }
     } catch (error) {
       console.log(error)
     }
   }
-
-
-
-
 
   const setStatusHandler = (stat) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -82,7 +81,7 @@ const UserState = (props) => {
   return (
     <UserContext.Provider
       value={{
-        status, setStatusHandler, uploadFile, returnVoter, user, faceRecognized, setFaceRecognized, message, setMessage
+        status, setStatusHandler, uploadFile, returnVoter, user, faceRecognized, setFaceRecognized, message, setMessage,setUser,
       }}
     >
       {props.children}

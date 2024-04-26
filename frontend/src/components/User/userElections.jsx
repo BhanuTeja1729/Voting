@@ -21,7 +21,7 @@ const userElections = () => {
   let navigate = useNavigate();
 
   const stat = useActiveWalletConnectionStatus();
-  const { setStatusHandler } = userContext;
+  const { setStatusHandler,user } = userContext;
 
   const getElectionList = async () => {
     try {
@@ -59,6 +59,7 @@ const userElections = () => {
   }, [election]);
 
   console.log(activeElection)
+  console.log(user)
 
 
   const handleVote = (e) => {
@@ -84,7 +85,7 @@ const userElections = () => {
   return (
     <>
       <div className="my-6 font-semibold text-3xl">Elections</div>
-      {election ? (
+      {election && user.hasVoted == false ? (
         <div>
           <Box
             sx={{
@@ -146,7 +147,7 @@ const userElections = () => {
             my: 3,
           }}
         >
-          No Elections Currently
+          {user.hasVoted ? <h1>You have already casted your vote,await for results</h1> : <h1>No Elections Currently</h1>}
         </Box>
       )}
     </>
