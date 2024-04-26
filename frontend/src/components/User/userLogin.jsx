@@ -26,27 +26,49 @@ const userLogin = () => {
   const [proceed, setProceed] = useState(false);
   const [msg, setMsg] = useState(false);
 
+  // const handleProceed = async () => {
+
+  //   try {
+  //     const data = await readContract({
+  //       contract: voterContract,
+  //       method: resolveMethod("checkVoter"),
+  //       params: [voterId, email]
+  //     })
+  //     if (data) {
+  //       returnVoter(voterId)
+  //       await console.log(user)
+  //       setProceed(!proceed)
+  //     }
+  //     else {
+  //       console.log("Login With Proper Credentials")
+  //     }
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+
+  // };
+
   const handleProceed = async () => {
-
     try {
-      const data = await readContract({
-        contract: voterContract,
-        method: resolveMethod("checkVoter"),
-        params: [voterId, email]
-      })
-      if (data) {
-        returnVoter(voterId)
-        console.log(user)
-        setProceed(!proceed)
-      }
-      else {
-        console.log("Login With Proper Credentials")
-      }
-    } catch (error) {
-      console.log(error)
-    }
+        const data = await readContract({
+            contract: voterContract,
+            method: resolveMethod("checkVoter"),
+            params: [voterId, email]
+        });
 
-  };
+        if (data) {
+            await returnVoter(voterId); // Wait for returnVoter to finish
+            // console.log(user); // This will log the updated user state
+            setProceed(!proceed);
+        } else {
+            console.log("Login With Proper Credentials");
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+
   const stat = useActiveWalletConnectionStatus();
   const acc = useActiveAccount();
 
@@ -54,6 +76,10 @@ const userLogin = () => {
     setStatusHandler(stat);
     // console.log(stat)
   }, [stat]);
+
+  useEffect(() => {
+    console.log(user); // This will log the updated user state
+  }, [user]);
 
   if (status) {
     navigate("/user/guidelines");

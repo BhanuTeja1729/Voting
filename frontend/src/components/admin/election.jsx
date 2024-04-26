@@ -120,6 +120,7 @@ const election = () => {
                 <Button variant='contained' color='success' sx={{ mr: 1.5 }} onClick={handleCreate} disabled={electionName == '' || election_id == ""}>Create Election</Button>
               </Box>
             </AccordionDetails>
+
           </Accordion>
         )
 

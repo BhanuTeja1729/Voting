@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/user/userContext";
 import { useActiveWalletConnectionStatus } from "thirdweb/react";
 
+
+
 const userGuidelines = () => {
 
   let userContext = useContext(UserContext);
@@ -12,7 +14,7 @@ const userGuidelines = () => {
 
   const stat = useActiveWalletConnectionStatus();
 
-  const { setStatusHandler } = userContext;
+  const { setStatusHandler, user } = userContext;
 
   useEffect(() => {
     if (stat == "disconnected") {
@@ -23,7 +25,7 @@ const userGuidelines = () => {
 
   return (
     <>
-      <div className="my-6 font-semibold text-3xl">Welcome Voter</div>
+      <div className="my-6 font-semibold text-3xl">Welcome {user.name}</div>
 
       <Box
         sx={{

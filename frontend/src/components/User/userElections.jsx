@@ -13,15 +13,53 @@ import { useActiveWalletConnectionStatus } from "thirdweb/react";
 
 const userElections = () => {
   // eslint-disable-next-line no-unused-vars, react-hooks/rules-of-hooks
-  const [election, setElection] = useState(true);
+  const [election, setElection] = useState();
+  const [activeElection, setActiveElection] = useState([]);
   // eslint-disable-next-line react-hooks/rules-of-hooks
 
   let userContext = useContext(UserContext);
   let navigate = useNavigate();
 
   const stat = useActiveWalletConnectionStatus();
-
   const { setStatusHandler } = userContext;
+
+  const getElectionList = async () => {
+    try {
+      const data = await readContract({
+        contract: elecContract,
+        method: resolveMethod("getElectionDetails"),
+        params: []
+      })
+
+      if (data) {
+        setElection(data);
+      }
+    } catch (error) {
+      console.log(error)
+    }
+
+
+  }
+  useEffect(() => {
+    if (election !== undefined) {
+      for (let i = 0; i < election[0].length; i++) {
+        if (election[2][i] === true) {
+          let obj = {
+            id: election[0][i],
+            name: election[1][i],
+            status: election[2][i]
+          };
+          setActiveElection(obj);
+
+          break;
+
+        }
+      }
+    }
+  }, [election]);
+
+  console.log(activeElection)
+
 
   const handleVote = (e) => {
     e.preventDefault();
@@ -30,11 +68,18 @@ const userElections = () => {
   };
 
   useEffect(() => {
+    getElectionList();
+  }, []);
+
+  useEffect(() => {
+
     if (stat == "disconnected") {
       setStatusHandler(stat);
       navigate("/");
     }
   }, [stat]);
+
+
 
   return (
     <>
@@ -67,7 +112,7 @@ const userElections = () => {
               }}
             >
               <div className=" text-center text-3xl font-semibold mt-4">
-                Election Name
+                {activeElection.name}
               </div>
               <img
                 src="https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067_640.png"
@@ -77,9 +122,9 @@ const userElections = () => {
                 className="my-4"
               />
               <div className="text-xl font-medium p-5">
-                <div>Location</div>
-                <div>Date</div>
-                <div>Time</div>
+                <div>Id : {activeElection.id}</div>
+                {/* <div>Date</div>
+                <div>Time</div> */}
               </div>
               <Button
                 variant="contained"

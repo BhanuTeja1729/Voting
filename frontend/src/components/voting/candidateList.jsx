@@ -1,30 +1,27 @@
 
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Box,
-  Stack,
-  Card,
-  CardContent,
-  CardMedia,
-  Button,
-} from "@mui/material";
+import { Box, Stack, Card, CardContent, CardMedia, Button } from "@mui/material";
 import CountdownTimer from "./countdownTimer";
 import FaceRecognitionComponent from "./faceRecognition";
 
-const CandidateList = () => {
+import UserContext from "../../contexts/user/userContext";
+
+
+const candidateList = () => {
   const navigate = useNavigate();
-  const [message, setMessage] = useState('');
+  const userContext = useContext(UserContext);
+  const { user, message } = userContext;
 
   const handleTimerEnd = () => {
-    // alert("Timer Ended!");
+    alert("Timer Ended!");
   };
+
 
   const handleVote = () => {
     alert("Vote Casted");
     navigate("/user/guidelines");
   };
-
   const cardData = [
     {
       id: 1,
@@ -88,7 +85,7 @@ const CandidateList = () => {
             <CountdownTimer startTime={3} onTimerEnd={handleTimerEnd} />
           </div>
           <div className="p-12 text-center text-2xl font-medium">
-            <Box sx={{mt:3}}>{message}</Box>
+            <Box sx={{ mt: 3 }}>{message}</Box>
           </div>
 
           <Box
@@ -99,18 +96,14 @@ const CandidateList = () => {
               p: 1,
             }}
           >
-            {/* <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSQ_-60wxOuaV2Ql3ebKHF6YFHjKcSwne4j0x0-RjVgg&s"
-              alt="Meow"
-            /> */}
-            <FaceRecognitionComponent setMessage={setMessage} />
+            <FaceRecognitionComponent imgUrl={user.imgUrl}/>
           </Box>
         </Stack>
 
         <Box
           sx={{
             mt: 8,
-            mb:6,
+            mb: 6,
             boxShadow: 1,
             padding: 2,
             maxHeight: "calc(100vh - 420px)",
@@ -157,4 +150,4 @@ const CandidateList = () => {
   );
 };
 
-export default CandidateList;
+export default candidateList;

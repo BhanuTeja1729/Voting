@@ -17,17 +17,18 @@ const UserState = (props) => {
     email: "",
     imgUrl: "",
   });
-
+  const [faceRecognized, setFaceRecognized] = useState(false);
+  const [message, setMessage] = useState("");
 
   const returnVoter = async (_voterId) => {
 
     try {
       const data = await readContract({
-        contract:voterContract,
+        contract: voterContract,
         method: resolveMethod("returnVoter"),
         params: [_voterId]
       })
-      if(data){
+      if (data) {
         setUser({
           voterId: data.voterId,
           name: data.name,
@@ -62,7 +63,7 @@ const UserState = (props) => {
     data.append("upload_preset", "image_preset");
 
     // Rename the file
-    const fileName = `${fName}_${lName}`;
+    const fileName = `${fName}${lName}`;
     data.append("public_id", fileName);
 
     try {
@@ -81,7 +82,7 @@ const UserState = (props) => {
   return (
     <UserContext.Provider
       value={{
-        status, setStatusHandler, uploadFile, returnVoter, user
+        status, setStatusHandler, uploadFile, returnVoter, user, faceRecognized, setFaceRecognized, message, setMessage
       }}
     >
       {props.children}
