@@ -22,6 +22,7 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 
 import UserContext from "../../contexts/user/userContext";
 
+
 const drawerWidth = 240;
 
 const userSidebar = () => {
@@ -45,7 +46,7 @@ const userSidebar = () => {
   }
 
   return (
-    <>
+    <div >
       <Box sx={{ display: "flex" }}>
         <Drawer
           variant="permanent"
@@ -93,7 +94,7 @@ const userSidebar = () => {
           </Box>
         </Drawer>
       </Box>
-    </>
+    </div>
   );
 };
 

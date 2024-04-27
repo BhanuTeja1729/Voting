@@ -89,7 +89,7 @@ const candidateList = () => {
             useFlexGap
             flexWrap="wrap"
           >
-
+            
             {candidateList.map((candidate) => (
               <Card key={candidate.name} sx={{ width: "15%" }}>
                 <CardContent sx={{ marginBottom: "1rem" }}>

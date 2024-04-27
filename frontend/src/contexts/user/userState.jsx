@@ -19,6 +19,8 @@ const UserState = (props) => {
   const [status, setStatus] = useState(false);
   const [electionChoice, setElectionChoice] = useState("");
   const [candidateList, setCandidateList] = useState([]);
+  const [wardNos,setWardNos]=useState("");
+  const [resultsByWard,setResultsByWard]=useState([]);
   const account = useActiveAccount();
   const [user, setUser] = useState({
     voterId: "",
@@ -103,10 +105,12 @@ const UserState = (props) => {
             partyNo: data[2][i],
             imageUrl: data[3][i],
           };
-          candidates.push(obj);
+         await candidates.push(obj);
         }
-        console.log(candidates);
-        await setCandidateList(candidates);
+         console.log(candidates);
+         setCandidateList(candidates);
+         updateWardNos();
+        
         return true;
       }
     } catch (error) {
@@ -114,6 +118,7 @@ const UserState = (props) => {
       toast.error("Failed to get candidate details");
     }
   };
+
 
   const updateVoter = async (props) => {
     const { candidate } = props;
@@ -160,6 +165,48 @@ const UserState = (props) => {
     }
   };
 
+  const updateWardNos = async () => {
+    let wards=[]
+    for(let i=0;i<candidateList.length;i++){
+      if(!wards.includes(candidateList[i].wardNo)){
+        wards.push(candidateList[i].wardNo);
+      }
+    }
+    setWardNos(wards);
+    console.log(wardNos);
+  };
+  
+  const getResults = async () => {
+    let res=[];
+    let results=[];
+    try {
+      wardNos.map( async (wardNo) => {
+      const data = await readContract({
+        contract:candContract,
+        method: resolveMethod("getCandidatesByWardNo"),
+        params: [wardNo],
+      });
+      if (data) {
+        for (let i = 0; i < data[0].length; i++) {
+          let obj = {
+            name: data[0][i],
+            wardNo: wardNo,
+            imageUrl: data[1][i],
+            votes: data[2][i],
+          };
+           await res.push(obj);
+        }
+        await results.push(res);
+        console.log(results);
+      }
+      setResultsByWard(results);
+      console.log(resultsByWard);
+    })}
+      catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <UserContext.Provider
       value={{
@@ -179,6 +226,8 @@ const UserState = (props) => {
         candidateList,
         updateVoter,
         updateVoterStatus,
+        getResults,
+        resultsByWard,
       }}
     >
       {props.children}
