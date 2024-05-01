@@ -6,7 +6,7 @@ import chain from "../thirdweb/chain.js";
 const voterContract = getContract({
   client,
   chain: chain,
-  address: "0x87Ffd0136E7a8A0f0Aff394F7BD7e2Ba16305ABF",
+  address: "0x05711e8385eE64339E929C470cd42A411A9D579E",
 });
 
 export default voterContract;
