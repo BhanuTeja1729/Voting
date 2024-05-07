@@ -85,7 +85,7 @@ const candidateList = () => {
           <Stack
             spacing={3}
             direction="row"
-            sx={{ justifyContent: "space-between" }}
+            sx={{ justifyContent: "space-evenly" }}
             useFlexGap
             flexWrap="wrap"
           >

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AdminContext from "./adminContext";
 import axios from "axios";
 
@@ -9,6 +9,7 @@ import candContract from "../../contracts/candidate";
 import elecContract from "../../contracts/election";
 import { prepareContractCall, resolveMethod, sendTransaction, readContract } from "thirdweb";
 import { useActiveAccount, useReadContract } from "thirdweb/react";
+import { hexToBigInt } from "thirdweb/utils";
 
 
 import { create } from "../../api/admin";
@@ -20,6 +21,8 @@ const AdminState = (props) => {
   const [voterList, setVoterList] = useState([]);
   const [candidateList, setCandidateList] = useState([]);
   const [electionList, setElectionList] = useState([]);
+  const [admin, setAdmin] = useState(null);
+  const [result, setResult] = useState();
 
   const getVoterList = async () => {
     // console.log("test");
@@ -100,13 +103,13 @@ const AdminState = (props) => {
 
 
     try {
-      const data = await readContract({ 
-        contract, 
-        method: resolveMethod("getCandidatesByElectionId"), 
-        params: [_electionId] 
+      const data = await readContract({
+        contract,
+        method: resolveMethod("getCandidatesByElectionId"),
+        params: [_electionId]
       })
     } catch (error) {
-      
+
     }
 
 
@@ -195,7 +198,7 @@ const AdminState = (props) => {
       const transaction = await prepareContractCall({
         contract: elecContract,
         method: resolveMethod("addElection"),
-        params: [ _election_name,_election_id,],
+        params: [_election_name, _election_id,],
       });
       const { transactionHash } = await sendTransaction({
         transaction,
@@ -236,7 +239,75 @@ const AdminState = (props) => {
     }
   }
 
-  
+  const getAdminDetails = async (props) => {
+    try {
+      const res = await fetch(`${host}/curr`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+
+      if (data) {
+        console.log(data);
+        setAdmin(data);
+        console.log("Login Successful");
+      } else {
+        console.log("Please Login");
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+  const getCandidateDetailsByElectionId = async (props) => {
+    const { _electionId } = props
+    const data = await readContract({
+      contract: candContract,
+      method: resolveMethod("getCandidatesByElectionId"),
+      params: [_electionId]
+    })
+    if (data) {
+      await console.log(data);
+      return data;
+    } else {
+      console.log("No Candidates Found");
+    }
+  }
+  const getVoteCounts = async (props) => {
+const { _electionId } = props
+    
+    let results = [];
+
+    const data = await readContract({
+      contract: candContract,
+      method: resolveMethod("getCandidatesByElectionId"),
+      params: [_electionId]
+    })
+    if (data) {
+      console.log(data)
+      for (let i = 0; i < data[0].length; i++) {
+        let obj = {
+          names: data[0][i],
+          ward: data[1][i],
+          party: data[2][i],
+          imageUrl: data[3][i],
+          votes: Number(hexToBigInt(data[4][i])),
+        };
+        await results.push(obj);
+      }
+      await setResult(results);
+      await console.log(results);
+    } else {
+      console.log("No Votes Found");
+    }
+  }
+
+
+
 
   return (
     <AdminContext.Provider
@@ -253,12 +324,20 @@ const AdminState = (props) => {
         addElection,
         switchElectionStatus,
         setElectionList,
-        electionList
+        electionList,
+        admin,
+        getAdminDetails,
+        getCandidateDetailsByElectionId,
+        getVoteCounts,
+        result
+
       }}
     >
       {props.children}
     </AdminContext.Provider>
   );
-};
+}
+
+
 
 export default AdminState;

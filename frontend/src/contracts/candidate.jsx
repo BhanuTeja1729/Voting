@@ -6,7 +6,7 @@ import chain from "../thirdweb/chain.js";
 const candContract = getContract({
   client,
   chain: chain,
-  address: "0x965BfDD6AB627C2771B84818989d48faB77c4B7A",
+  address: "0xDe80bEac29525276dd79bc2D0eAaC42b044094a3",
 });
 
 
