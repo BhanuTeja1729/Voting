@@ -21,8 +21,12 @@ const AdminState = (props) => {
   const [voterList, setVoterList] = useState([]);
   const [candidateList, setCandidateList] = useState([]);
   const [electionList, setElectionList] = useState([]);
+  const [wardNos, setWardNos] = useState([]);
   const [admin, setAdmin] = useState(null);
-  const [result, setResult] = useState();
+  const [resultByE, setResultByE] = useState();
+  const [resultByW, setResultByW] = useState();
+
+  const [publishResult, setPublishResult] = useState(false);
 
   const getVoterList = async () => {
     // console.log("test");
@@ -83,37 +87,7 @@ const AdminState = (props) => {
     }
   };
 
-  const getCandidateList = async (props) => {
-    // console.log("test");
-    // try {
-    //   const res = await fetch(`${host}/candidatelist`, {
-    //     method: "GET",
-    //     credentials: "include",
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Content-Type": "application/json",
-    //     },
-    //   });
-    //   const data = await res.json();
-    //   console.log(data);
-    //   setCandidateList(data);
-    // } catch (error) {
-    //   console.error(error.message);
-    // }
 
-
-    try {
-      const data = await readContract({
-        contract,
-        method: resolveMethod("getCandidatesByElectionId"),
-        params: [_electionId]
-      })
-    } catch (error) {
-
-    }
-
-
-  };
 
   const handleApprove = async (props) => {
     const { _aadharno, _email, _imgUrl, _name, _id, voter } = props;
@@ -277,9 +251,8 @@ const AdminState = (props) => {
       console.log("No Candidates Found");
     }
   }
-  const getVoteCounts = async (props) => {
-const { _electionId } = props
-    
+  const getVoteCountsByEid = async (_electionId) => {
+
     let results = [];
 
     const data = await readContract({
@@ -299,11 +272,91 @@ const { _electionId } = props
         };
         await results.push(obj);
       }
-      await setResult(results);
+      await setResultByE(results);
       await console.log(results);
     } else {
       console.log("No Votes Found");
     }
+  }
+
+  const getVoteCountsByWard = async (_wardNo) => {
+
+    let results = [];
+
+    const data = await readContract({
+      contract: candContract,
+      method: resolveMethod("getCandidatesByWardNo"),
+      params: [_wardNo]
+    })
+    if (data) {
+      console.log(data)
+      for (let i = 0; i < data[0].length; i++) {
+        let obj = {
+          names: data[0][i],
+          imageUrl: data[1][i],
+          votes: Number(hexToBigInt(data[2][i])),
+        };
+        await results.push(obj);
+      }
+      await setResultByW(results);
+      await console.log(results);
+    } else {
+      console.log("No Votes Found");
+    }
+  }
+
+  const getCandidateList = async (_electionId) => {
+    try {
+      const data = await readContract({
+        contract: candContract,
+        method: resolveMethod("getCandidatesByElectionId"),
+        params: [_electionId]
+      })
+
+      let candidates = [];
+      if (data) {
+        console.log(data);
+        for (let i = 0; i < data[0].length; i++) {
+          let obj = {
+            name: data[0][i],
+            wardNo: data[1][i],
+            partyNo: data[2][i],
+            imageUrl: data[3][i],
+          };
+          await candidates.push(obj);
+        }
+      }
+
+      console.log(candidates);
+      setCandidateList(candidates);
+      updateWardNos()
+    } catch (error) {
+      console.error(error)
+    }
+  };
+
+  const updateWardNos = async () => {
+    let wards = [];
+    // Ensure candidateList is not empty before proceeding
+    if (candidateList.length > 0) {
+      for (let i = 0; i < candidateList.length; i++) {
+        if (!wards.includes(candidateList[i].wardNo)) {
+          wards.push(candidateList[i].wardNo);
+        }
+      }
+      setWardNos(wards);
+
+    }
+  };
+
+  const activateResults = async () => {
+    console.log(publishResult)
+    setPublishResult(true);
+  }
+
+  const deactivateResults = async () => {
+    console.log(publishResult)
+    setPublishResult(false);
   }
 
 
@@ -328,8 +381,14 @@ const { _electionId } = props
         admin,
         getAdminDetails,
         getCandidateDetailsByElectionId,
-        getVoteCounts,
-        result
+        getVoteCountsByEid,
+        getVoteCountsByWard,
+        resultByE,
+        resultByW,
+        wardNos,
+        activateResults,
+        publishResult,
+        deactivateResults
 
       }}
     >

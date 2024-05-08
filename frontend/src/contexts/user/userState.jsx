@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useState, useContext } from "react";
 import UserContext from "./userContext";
 import axios from "axios";
+
 
 //contracts
 import voterContract from "../../contracts/voter";
@@ -11,6 +12,7 @@ import {
   resolveMethod,
   sendTransaction,
   prepareContractCall,
+  hexToBigInt
 } from "thirdweb";
 import { useActiveAccount } from "thirdweb/react";
 import { toast } from "react-toastify";
@@ -18,9 +20,12 @@ import { toast } from "react-toastify";
 const UserState = (props) => {
   const [status, setStatus] = useState(false);
   const [electionChoice, setElectionChoice] = useState("");
+  const [_electionId, setElectionId] = useState("101");
   const [candidateList, setCandidateList] = useState([]);
-  const [wardNos,setWardNos]=useState("");
+  const [candList,setCandList]=useState("");
+  const [wardNos,setWardNos]=useState();
   const [resultsByWard,setResultsByWard]=useState([]);
+  const [resStatus, setResStatus] = useState(false);
   const account = useActiveAccount();
   const [user, setUser] = useState({
     voterId: "",
@@ -109,8 +114,6 @@ const UserState = (props) => {
         }
          console.log(candidates);
          setCandidateList(candidates);
-         updateWardNos();
-        
         return true;
       }
     } catch (error) {
@@ -165,47 +168,73 @@ const UserState = (props) => {
     }
   };
 
-  const updateWardNos = async () => {
-    let wards=[]
-    for(let i=0;i<candidateList.length;i++){
-      if(!wards.includes(candidateList[i].wardNo)){
-        wards.push(candidateList[i].wardNo);
-      }
-    }
-    setWardNos(wards);
-    console.log(wardNos);
-  };
-  
-  const getResults = async () => {
-    let res=[];
-    let results=[];
+  const getCandidateList = async () => {
     try {
-      wardNos.map( async (wardNo) => {
       const data = await readContract({
-        contract:candContract,
-        method: resolveMethod("getCandidatesByWardNo"),
-        params: [wardNo],
-      });
+        contract: candContract,
+        method: resolveMethod("getCandidatesByElectionId"),
+        params: ["101"]
+      })
+
+      let candidates = [];
       if (data) {
+        console.log(data);
         for (let i = 0; i < data[0].length; i++) {
           let obj = {
             name: data[0][i],
-            wardNo: wardNo,
-            imageUrl: data[1][i],
-            votes: data[2][i],
+            wardNo: data[1][i],
+            partyNo: data[2][i],
+            imageUrl: data[3][i],
           };
-           await res.push(obj);
+          await candidates.push(obj);
         }
-        await results.push(res);
-        console.log(results);
       }
-      setResultsByWard(results);
-      console.log(resultsByWard);
-    })}
-      catch (error) {
-      console.log(error)
+
+      console.log(candidates);
+      setCandList(candidates);
+      updateWardNos()
+    } catch (error) {
+      console.error(error)
+    }
+  };
+
+  const updateWardNos = async () => {
+    let wards=[]
+    for(let i=0;i<candList.length;i++){
+      if(!wards.includes(candList[i].wardNo)){
+        wards.push(candList[i].wardNo);
+      }
+    }
+    await setWardNos(wards);
+    console.log(wardNos);
+  };
+  
+  const getVoteCountsByWard = async (_wardNo) => {
+
+    let results = [];
+
+    const data = await readContract({
+      contract: candContract,
+      method: resolveMethod("getCandidatesByWardNo"),
+      params: [_wardNo]
+    })
+    if (data) {
+      console.log(data)
+      for (let i = 0; i < data[0].length; i++) {
+        let obj = {
+          names: data[0][i],
+          imageUrl: data[1][i],
+          votes: Number(hexToBigInt(data[2][i])),
+        };
+        await results.push(obj);
+      }
+      await setResultsByWard(results);
+      await console.log(results);
+    } else {
+      console.log("No Votes Found");
     }
   }
+
 
   return (
     <UserContext.Provider
@@ -226,8 +255,10 @@ const UserState = (props) => {
         candidateList,
         updateVoter,
         updateVoterStatus,
-        getResults,
         resultsByWard,
+        getCandidateList,
+        wardNos,
+        getVoteCountsByWard,
       }}
     >
       {props.children}

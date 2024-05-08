@@ -81,6 +81,7 @@ const adminSidebar = () => {
             <List sx={{ ml: 3 }}>
               <AALogin />
             </List>
+            <Divider />
             <List>
               <ListItem key={"Logout"} disablePadding>
                 <ListItemButton onClick={handleLogout}>
@@ -91,6 +92,7 @@ const adminSidebar = () => {
                 </ListItemButton>
               </ListItem>
             </List>
+            <Divider />
           </Box>
         </Drawer>
       </Box>
