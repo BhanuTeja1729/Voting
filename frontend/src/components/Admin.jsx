@@ -8,15 +8,17 @@ const Admin = () => {
   const adminContext = useContext(AdminContext);
   const { admin, getAdminDetails } = adminContext;
 
+  const location = useLocation();
+
 
   useEffect(() => {
     getAdminDetails();
-  },[])
+  }, [])
 
 
   return (
     <>
-      <div>
+      {/* <div>
         {admin ? (
           <div>
             <Sidebar />
@@ -33,7 +35,27 @@ const Admin = () => {
 
 
         )}
-      </div>
+      </div> */}
+      {
+        location.pathname === "/admin/login" ? (
+          <div>
+
+            <Box sx={{ ml: 35 }}>
+              <Outlet />
+            </Box>
+          </div>
+        ) : (
+          <div>
+            <Sidebar />
+            <Box sx={{ ml: 35 }}>
+              <Outlet />
+            </Box>
+          </div>
+        )
+      }
+
+
+
     </>
   );
 };

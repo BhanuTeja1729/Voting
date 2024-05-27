@@ -161,7 +161,7 @@ const userElections = () => {
           }}
         >
           {user.hasVoted ? (
-            <h1>You have already casted your vote,await for results</h1>
+            <h1>You have already casted your vote, await for results</h1>
           ) : (
             <h1>No Elections Currently</h1>
           )}
