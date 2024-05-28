@@ -9,6 +9,7 @@ import UserContext from "../../contexts/user/userContext";
 
 
 const candidateList = () => {
+  const [voted, setVoted] = useState(null)
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
   const {
@@ -28,15 +29,21 @@ const candidateList = () => {
 
 
   const handleVote = async (candidate) => {
-    const props = { candidate };
-    let res = await updateVoter(props);
-    if (res) {
-      let res2 = await updateVoterStatus();
-      if (res2) {
-        toast.success("Vote Casted");
-        navigate("/user/guidelines")
+    if (voted) {
+      toast.error("You have already voted");
+
+    } else {
+      const props = { candidate };
+      let res = await updateVoter(props);
+      if (res) {
+        let res2 = await updateVoterStatus();
+        if (res2) {
+          toast.success("Vote Casted");
+          navigate("/user/guidelines")
+        }
       }
     }
+
   };
 
   return (
@@ -89,7 +96,7 @@ const candidateList = () => {
             useFlexGap
             flexWrap="wrap"
           >
-            
+
             {candidateList.map((candidate) => (
               <Card key={candidate.name} sx={{ width: "15%" }}>
                 <CardContent sx={{ marginBottom: "1rem" }}>
@@ -107,6 +114,7 @@ const candidateList = () => {
                     <div>
                       <Button
                         variant="contained"
+                        disabled={!user && voted}
                         color="success"
                         sx={{ width: "100%" }}
                         onClick={() => handleVote(candidate)}

@@ -20,13 +20,13 @@ const voter = () => {
     method: resolveMethod("totalVoters"),
     params: [],
   });
-  if (!isLoading) {
-    console.log(hexToNumber(data));
-  }
+  // if (!isLoading) {
+  //   console.log(hexToNumber(data));
+  // }
 
   return (
     <div>
-      <h1 className="mb-8 text-3xl font-semibold mt-20">Voter Page</h1>
+      <h1 className="mb-8 text-3xl font-semibold mt-20">Voter Verification</h1>
       <h2 className="text-xl font-semibold">Total Registered Voters: {!isLoading && hexToNumber(data)}</h2>
       <Stack direction={"row"} justifyContent={"space-around"} mt={5}>
         <Typography

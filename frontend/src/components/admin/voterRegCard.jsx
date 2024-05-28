@@ -25,7 +25,7 @@ import { toast } from "react-toastify";
 
 const voterRegCard = (props) => {
   const adminContext = useContext(AdminContext);
-  const { deleteVoter, handleApprove,getVoterList } = adminContext;
+  const { deleteVoter, handleApprove, getVoterList } = adminContext;
   const { voter } = props;
 
   const account = useActiveAccount();
@@ -36,6 +36,7 @@ const voterRegCard = (props) => {
   var vPhone = voter.phoneNumber;
   var vId = voter.voterId;
   var vAn = voter.aadharNumber;
+  var vImg = voter.imgUrl;
 
   var _id = vId;
   var _name = vName;
@@ -65,17 +66,15 @@ const voterRegCard = (props) => {
       {/* {console.log(voter)} */}
       <div className="shadow w-4/5 text-xl">
         {account && (
-          <Card sx={{ p: 3 }}>
-            <Stack spacing={3} direction={"row"} className="flex flex-row">
-              <Stack
-                spacing={2}
-                direction="column"
-                alignItems="flex-start"
-                justifyContent="space-between"
-                className="basis-2/5"
-              >
+          <Card sx={{ p: 3, width:"115%" }}>
+            <Stack direction="row" spacing={3} alignItems="center" >
+              {/* Left Column with Image and Details */}
+              <Stack direction="row" spacing={2} flexBasis="40%">
+                <Box display="flex" justifyContent="center" alignItems="center" sx={{ width: '200px' }}>
+                  <img src={vImg} alt="Voter Image" style={{ width: '100%', maxWidth: '200px' }} />
+                </Box>
                 <Box>
-                  <List sx={{ width: "100%", maxWidth: 360, my: 2 }}>
+                  <List sx={{ width: '100%', maxWidth: 450 }}>
                     <ListItem>
                       <ListItemText primary={`Name: ${vName}`} />
                     </ListItem>
@@ -94,15 +93,17 @@ const voterRegCard = (props) => {
                   </List>
                 </Box>
               </Stack>
-              <Stack
-                spacing={2}
-                direction="row"
-                alignItems="flex-start"
-                className="basis-2/5"
-              >
-                <Divider orientation="vertical" flexItem />
+
+              {/* Divider */}
+              <Divider orientation="vertical" flexItem />
+
+              {/* Right Column with Image and Details */}
+              <Stack direction="row" spacing={2} flexBasis="40%">
+                <Box display="flex" justifyContent="center" alignItems="center" sx={{ width: '200px' }}>
+                  <img src={vImg} alt="Voter Image" style={{ width: '100%', maxWidth: '200px' }} />
+                </Box>
                 <Box>
-                  <List sx={{ width: "100%", maxWidth: 360, my: 2 }}>
+                  <List sx={{ width: '100%', maxWidth: 450 }}>
                     <ListItem>
                       <ListItemText primary={`Name: ${vName}`} />
                     </ListItem>
@@ -121,29 +122,30 @@ const voterRegCard = (props) => {
                   </List>
                 </Box>
               </Stack>
-              <div className="basis-1/5 items-center flex flex-col gap-2 py-12">
+
+              {/* Action Buttons */}
+              <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" flexBasis="20%">
                 <Button
                   variant="contained"
                   color="error"
-                  className="absolute top-0 right-0"
                   onClick={handleDelete}
-                  sx={{ maxHeight: 50, maxWidth: 350 }}
+                  sx={{ minWidth: 50, minHeight: 50, mb: 2 }}
                 >
                   <DeleteOutlineOutlinedIcon />
                 </Button>
-                {console.log(voter._id)}
+              
                 <Button
                   variant="contained"
                   color="success"
-                  className="absolute top-0 right-0"
                   onClick={handApprov}
-                  sx={{ maxHeight: 50, maxWidth: 350 }}
+                  sx={{ minWidth: 50, minHeight: 50 }}
                 >
                   <CheckIcon />
                 </Button>
-              </div>
+              </Box>
             </Stack>
           </Card>
+
         )}
       </div>
     </>
